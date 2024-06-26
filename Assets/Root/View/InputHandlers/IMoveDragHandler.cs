@@ -1,6 +1,6 @@
 ﻿namespace Root
 {
-    public interface IMoveDragHandler : IDragHandler
+    public interface IMoveDragHandler : IDragEventsHandler
     {
     }
 }

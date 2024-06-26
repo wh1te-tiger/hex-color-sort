@@ -1,68 +1,70 @@
-﻿using System.Collections.Generic;
-using UniRx;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Root
 {
-    public class DragService : MonoBehaviour
+    public class DragService 
     {
-        [SerializeField] private List<MoveDragHandler> dragHandlers;
+        #region Dependencies
         
-        private Camera _cam;
+        private readonly Camera _camera;
+        
+        #endregion
+        
+        private const float ClipPlaneDistance = -1f;
 
-        private void Awake()
+        public DragService(Camera camera)
         {
-            _cam = Camera.main;
+            _camera = camera;
+        }
+        
+        public void HandleBeginDragEvent(PointerEventData pointerData)
+        {
+            var screenPos = new Vector3(pointerData.position.x, pointerData.position.y, _camera.nearClipPlane);
+            var ray = _camera.ScreenPointToRay(screenPos);
+
+            if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Selectable"))) return;
+                
+            var selectable = hit.transform.gameObject.GetComponent<ISelectable>();
+            selectable.IsSelected = true;
+        }
+        
+        public void HandleEndDragEvent(PointerEventData pointerData)
+        {
+            var screenPos = new Vector3(pointerData.position.x, pointerData.position.y, _camera.nearClipPlane);
+            var ray = _camera.ScreenPointToRay(screenPos);
+
+            if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Selectable"))) return;
+
+            var stackTransform = hit.transform;
             
-            foreach (var handler in dragHandlers)
-            {
-                this.ObserveEveryValueChanged(_ => handler.InputData)
-                    .Skip(1)
-                    .Subscribe(input => HandleDrag(handler, input))
-                    .AddTo(this);
-                handler.DragEnded += OnDragEnded;
-            }
-        }
-
-        private void OnDragEnded(IDragHandler handler)
-        {
-            switch (handler)
-            {
-                case IMoveDragHandler:
-                    var inputData = handler.InputData;
-                    var screenPos = new Vector3(inputData.PointerPosition.x, inputData.PointerPosition.y, _cam.nearClipPlane);
-                    var ray = _cam.ScreenPointToRay(screenPos);
-                    if (Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Cell")))
-                    {
-                        inputData.Target.SetParent(hit.transform);
-                    }
-
-                    inputData.Target.localPosition = new Vector3();
-                    break;
-            }
-        }
-
-        private void HandleDrag(IDragHandler handler, InputData inputData)
-        {
-            switch (handler)
-            {
-                case IMoveDragHandler:
-                    var pos = DragPointToWorldPos(inputData.PointerPosition, -1f);
-                    inputData.Target.position = new Vector3(pos.x, 1f, pos.y);
-                    break;
-            }
+            var selectable = stackTransform.gameObject.GetComponent<ISelectable>();
+            selectable.IsSelected = false;
         }
         
-        private Vector2 DragPointToWorldPos(Vector2 position, float distance)
+        public Vector2 DragPointToWorldPos()
         {
-            var worldPoint = _cam.ScreenToWorldPoint(new Vector3(position.x, position.y, _cam.nearClipPlane));
-            var plane = new Plane(Vector3.up, distance);
-            var ray = _cam.ScreenPointToRay(position);
+            var position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
+            var worldPoint = _camera.ScreenToWorldPoint(new Vector3(position.x, position.y, _camera.nearClipPlane));
+            var plane = new Plane(Vector3.up, ClipPlaneDistance);
+            var ray = _camera.ScreenPointToRay(position);
             if (plane.Raycast(ray, out var enter))
             {
                 worldPoint = ray.GetPoint(enter);
             }
             return new Vector2(worldPoint.x, worldPoint.z);
+        }
+
+        public bool IsOverCell(Vector3 pos, out Transform cell)
+        {
+            cell = null;
+            var screenPos = _camera.WorldToScreenPoint(pos);
+            var ray = _camera.ScreenPointToRay(screenPos);
+            
+            if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Cell"))) return false;
+            
+            cell = hit.transform;
+            return true;
         }
     }
 }
