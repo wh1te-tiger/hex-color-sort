@@ -1,23 +1,36 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 
 namespace Root
 {
-    public class Colorable : MonoBehaviour
+    public class Colorable : EntityProvider
     {
         [SerializeField] private MeshRenderer meshRenderer;
         
         private MaterialPropertyBlock _propertyBlock;
         private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
 
-        protected virtual void Awake()
+        void Awake()
         {
             _propertyBlock = new MaterialPropertyBlock();
         }
+        
+        protected override void Setup()
+        {
+            ref var colorComponent = ref GetOrAdd<Color>();
+            colorComponent.Property = new ReactiveProperty<UnityEngine.Color>();
+            colorComponent.Property
+                .ObserveEveryValueChanged(p=> p.Value)
+                .Subscribe(SetColor)
+                .AddTo(this);
+        }
 
-        public void SetColor(Color color)
+        public void SetColor(UnityEngine.Color color)
         {
             _propertyBlock.SetColor(ColorPropertyId, color);
             meshRenderer.SetPropertyBlock(_propertyBlock);
         }
+
+        
     }
 }

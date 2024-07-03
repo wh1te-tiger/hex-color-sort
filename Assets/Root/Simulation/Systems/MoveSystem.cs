@@ -10,7 +10,7 @@ namespace Root
         private EcsPool<Destination> _destinationPool;
 
         private const float MinDistance = .05f;
-        private const float HorizontalSpeed = 40f;
+        private const float HorizontalSpeed = 45f;
         private const float VerticalSpeed = 3f;
         
         public void Init(IEcsSystems systems)
@@ -33,7 +33,7 @@ namespace Root
                 var targetPos = destination.Value;
                 
                 ref var pos = ref _positionPool.Get(entity);
-                var currentPos = pos.Value.Value;
+                var currentPos = pos.Property.Value;
                 
                 var difference = targetPos - currentPos;
                 if (difference.magnitude < MinDistance)
@@ -46,7 +46,7 @@ namespace Root
                 var deltaPositionXZ = direction * HorizontalSpeed * Time.deltaTime;
                 var deltaPositionY = direction * VerticalSpeed * Time.deltaTime;
                 var deltaPos = new Vector3(deltaPositionXZ.x, deltaPositionY.y, deltaPositionXZ.z);
-                pos.Value.Value = Vector3.MoveTowards(currentPos, targetPos, deltaPos.magnitude);
+                pos.Property.Value = Vector3.MoveTowards(currentPos, targetPos, deltaPos.magnitude);
             }
         }
     }

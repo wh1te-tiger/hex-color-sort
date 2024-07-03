@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Root
 {
+    [RequireComponent(typeof(EntityConverter))]
     public abstract class EntityProvider : MonoBehaviour
     {
         protected EcsWorld World { get; private set; }

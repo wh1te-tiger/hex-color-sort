@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4005731257971766135}
   - component: {fileID: 6470986848382869252}
+  - component: {fileID: 7101419029604057984}
+  - component: {fileID: 2660117465281783703}
   - component: {fileID: 8265796583154436440}
   - component: {fileID: 8175174724721775308}
-  - component: {fileID: 2660117465281783703}
   - component: {fileID: 6368554425568371316}
   m_Layer: 6
   m_Name: cell
@@ -49,10 +50,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fbb3040e540e824da624ca6a3156256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 5457376735061605261}
   baseColor: {r: 0.3764706, g: 0.3764706, b: 0.3764706, a: 1}
   highlightColor: {r: 0.554, g: 0.554, b: 0.554, a: 1}
+  colorable: {fileID: 7101419029604057984}
   <IsFree>k__BackingField: 0
+--- !u!114 &7101419029604057984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773028941820529108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 247bd983d3804746bce469d0f0b5ced1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 5457376735061605261}
+--- !u!114 &2660117465281783703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773028941820529108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e93426b16d5454c89e8d47ccded1c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8265796583154436440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,29 +110,17 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 68
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.9
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2660117465281783703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773028941820529108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e93426b16d5454c89e8d47ccded1c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!54 &6368554425568371316
 Rigidbody:
   m_ObjectHideFlags: 0

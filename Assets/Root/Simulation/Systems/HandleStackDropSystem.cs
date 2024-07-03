@@ -34,18 +34,19 @@ namespace Root
             foreach (var entity in _eventListener.OnRemove)
             {
                 ref var positionComponent = ref _positionPool.Get(entity);
-                var pos = positionComponent.Value.Value;
+                var pos = positionComponent.Property.Value;
                 ref var destinationComponent = ref _destinationPool.Get(entity);
                 
                 Vector3 desPos;
+                ref var parentComponent = ref _parentPool.Get(entity);
                 if (_dragService.IsOverCell(pos, out var transform))
                 {
                     desPos = transform.position;
+                    parentComponent.Property.Value = null;
                 }
                 else
                 {
-                    ref var parentComponent = ref _parentPool.Get(entity);
-                    desPos = parentComponent.Value.position;
+                    desPos = parentComponent.Property.Value.position;
                 }
                 
                 destinationComponent.Value = new Vector3(desPos.x, 0f, desPos.z);

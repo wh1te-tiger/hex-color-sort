@@ -4,6 +4,6 @@ namespace Root
 {
     public struct Position
     {
-        public Vector3ReactiveProperty Value;
+        public Vector3ReactiveProperty Property;
     }
 }

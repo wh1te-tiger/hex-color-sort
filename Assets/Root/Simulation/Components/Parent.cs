@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using UniRx;
+using UnityEngine;
 
 namespace Root
 {
     public struct Parent
     {
-        public Transform Value;
+        public ReactiveProperty<Transform> Property;
     }
 }

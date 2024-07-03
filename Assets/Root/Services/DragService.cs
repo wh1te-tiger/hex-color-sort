@@ -26,21 +26,25 @@ namespace Root
             if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Selectable"))) return;
                 
             var selectable = hit.transform.gameObject.GetComponent<ISelectable>();
-            selectable.IsSelected = true;
+            selectable.AddSelected();
         }
         
-        public void HandleEndDragEvent(PointerEventData pointerData)
+        /*public void HandleEndDragEvent(PointerEventData pointerData)
         {
             var screenPos = new Vector3(pointerData.position.x, pointerData.position.y, _camera.nearClipPlane);
             var ray = _camera.ScreenPointToRay(screenPos);
 
-            if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Selectable"))) return;
+            if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Selectable")))
+            {
+                Debug.Log("ISelectable not found");
+                return;
+            }
 
             var stackTransform = hit.transform;
             
             var selectable = stackTransform.gameObject.GetComponent<ISelectable>();
             selectable.IsSelected = false;
-        }
+        }*/
         
         public Vector2 DragPointToWorldPos()
         {

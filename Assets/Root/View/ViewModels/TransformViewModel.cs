@@ -10,15 +10,17 @@ namespace Root
         
         protected override void Setup()
         {
+            ref var transformComponent = ref GetOrAdd<UnityComponent<Transform>>();
+            transformComponent.Component = transform;
+            
             var tr = positionRoot == null ? transform : positionRoot;
             
             ref var positionComponent = ref GetOrAdd<Position>();
-            positionComponent.Value = new Vector3ReactiveProperty(transform.position);
+            positionComponent.Property = new Vector3ReactiveProperty(transform.position);
             /*ref var rotationComponent = ref GetOrAdd<Rotation>();
             positionComponent.Value = new Vector3ReactiveProperty();*/
             
-            positionComponent.Value
-                .ObserveEveryValueChanged(v=>v.Value)
+            positionComponent.Property
                 .Subscribe(value =>
                 {
                     tr.position = new Vector3(value.x, value.y, value.z);
@@ -26,14 +28,23 @@ namespace Root
                 .AddTo(this);
             
             ref var parentComponent = ref Add<Parent>();
-            parentComponent.Value = transform.parent;
-            this
-                .ObserveEveryValueChanged(_ => transform.parent)
+            var property = new ReactiveProperty<Transform>();
+            parentComponent.Property = property;
+            
+            property.Value = transform.parent;
+            property
+                .Subscribe(v => transform.parent = v)
+                .AddTo(this);
+
+            /*this.ObserveEveryValueChanged(_ => transform.parent)
                 .Subscribe(v =>
                 {
-                    ref var p = ref Get<Parent>();
-                    p.Value = transform.parent;
-                });
+                    if (!ReferenceEquals(v, property.Value))
+                    {
+                        property.Value = v;
+                    }
+                })
+                .AddTo(this);*/
         }
     }
 }

@@ -5,20 +5,19 @@ using UnityEngine;
 namespace Root
 {
     [RequireComponent(typeof(ObservableEventTrigger))]
-    public class CellViewModel : Colorable
+    public class CellViewModel : EntityProvider
     {
-        [SerializeField] private Color baseColor;
-        [SerializeField] private Color highlightColor;
+        [SerializeField] private UnityEngine.Color baseColor;
+        [SerializeField] private UnityEngine.Color highlightColor;
+        [SerializeField] private Colorable colorable;
         
         [field: SerializeField] public bool IsFree { get; set; }
         
         public bool IsHighlighted { get; set; }
         private ObservableEventTrigger _trigger;
         
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            
             _trigger = GetComponent<ObservableEventTrigger>();
             
             _trigger
@@ -30,9 +29,26 @@ namespace Root
                 .Subscribe(_ => IsHighlighted = false)
                 .AddTo(this);
             this.ObserveEveryValueChanged(_ => IsHighlighted)
-                .Subscribe(v => SetColor(v ? highlightColor : baseColor))
+                .Subscribe(v => colorable.SetColor(v ? highlightColor : baseColor))
+                .AddTo(this);
+
+            this
+                .OnTriggerEnterAsObservable()
+                .Subscribe(v =>
+                {
+                    HandleStackPlacement();
+                })
                 .AddTo(this);
         }
-        
+
+        private void HandleStackPlacement()
+        {
+            Debug.Log($"{gameObject.GetInstanceID()}");
+        }
+
+        protected override void Setup()
+        {
+            
+        }
     }
 }
