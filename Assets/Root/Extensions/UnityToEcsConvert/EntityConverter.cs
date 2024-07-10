@@ -16,7 +16,22 @@ namespace Root
             if (_converted) return;
 
             var entity = world.NewEntity();
+            CreateInternal(world, entity);
+            
+            _converted = true;
+        }
+        
+        public void Convert(EcsWorld world, int entity)
+        {
+            if (_converted) return;
+            
+            CreateInternal(world, entity);
+            
+            _converted = true;
+        }
 
+        private void CreateInternal(EcsWorld world, int entity)
+        {
             var components = GetComponents<EntityProvider>();
             foreach (var component in components)
             {
@@ -24,7 +39,6 @@ namespace Root
             }
             
             _packedEntityWithWorld = world.PackEntityWithWorld(entity);
-            _converted = true;
         }
         
         private void OnDestroy()
@@ -34,11 +48,6 @@ namespace Root
                 world.DelEntity(entity);
                 _packedEntityWithWorld = default;
             }
-        }
-        
-        public EcsPackedEntityWithWorld GetEntity()
-        {
-            return _packedEntityWithWorld;
         }
     }
 }

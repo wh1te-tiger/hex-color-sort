@@ -9,14 +9,14 @@ namespace Root
         private EcsPool<Position> _positionPool;
         private EcsPool<Destination> _destinationPool;
 
-        private const float MinDistance = .05f;
+        private const float MinDistance = .01f;
         private const float HorizontalSpeed = 45f;
         private const float VerticalSpeed = 3f;
         
         public void Init(IEcsSystems systems)
         {
             var world = systems.GetWorld();
-            _filter = world.Filter<Position>().Inc<Destination>().End();
+            _filter = world.Filter<Position>().Inc<Destination>().Exc<Delay>().End();
             _positionPool = world.GetPool<Position>();
             _destinationPool = world.GetPool<Destination>();
         }
@@ -46,7 +46,7 @@ namespace Root
                 var deltaPositionXZ = direction * HorizontalSpeed * Time.deltaTime;
                 var deltaPositionY = direction * VerticalSpeed * Time.deltaTime;
                 var deltaPos = new Vector3(deltaPositionXZ.x, deltaPositionY.y, deltaPositionXZ.z);
-                pos.Property.Value = Vector3.MoveTowards(currentPos, targetPos, deltaPos.magnitude);
+                pos.Property.SetValueAndForceNotify(Vector3.MoveTowards(currentPos, targetPos, deltaPos.magnitude));
             }
         }
     }

@@ -4,16 +4,19 @@ using UnityEngine;
 
 namespace Root
 {
-    public class FillContainerSystem : IEcsInitSystem, IEcsRunSystem
+    public class ContainerFillSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly HexFactory _hexFactory;
         private readonly ColorSettings _colorSettings;
         
         private EcsFilter _initRequestFilter;
         private EcsPool<Color> _colorPool;
+        private EcsPool<Parent> _parentPool;
+        private EcsPool<ChildRoot> _childRootPool;
         private EcsPool<Hexes> _hexesPool;
+        private EcsPool<Source> _sourcePool;
 
-        public FillContainerSystem(HexFactory hexFactory, ColorSettings colorSettings)
+        public ContainerFillSystem(HexFactory hexFactory, ColorSettings colorSettings)
         {
             _hexFactory = hexFactory;
             _colorSettings = colorSettings;
@@ -26,7 +29,10 @@ namespace Root
             _initRequestFilter = world.Filter<InitRequest>().Inc<Hexes>().End();
             
             _colorPool = world.GetPool<Color>();
+            _parentPool = world.GetPool<Parent>();
+            _childRootPool = world.GetPool<ChildRoot>();
             _hexesPool = world.GetPool<Hexes>();
+            _sourcePool = world.GetPool<Source>();
         }
 
         public void Run(IEcsSystems systems)
@@ -52,20 +58,27 @@ namespace Root
                         .Select((c, i) => new {ColorName = c, Index = i}), count => count.Index, color => color.Index,
                     (count, color) => new { color.ColorName, count.Count });
 
-            ref var parentHexesComponent = ref _hexesPool.Get(parent);
+            ref var hexesComponent = ref _hexesPool.Get(parent);
+            ref var childRootComponent = ref _childRootPool.Get(parent);
             
             foreach (var record in hexesByColorCount)
             {
                 for (var i = 0; i < record.Count; i++)
                 {
-                    var hexView = _hexFactory.Create();
-                    var entityId = hexView.EntityId;
-
-                    ref var colorComponent = ref _colorPool.Get(entityId);
+                    //создали
+                    var hex = _hexFactory.Create();
+                    
+                    //разукрасили
+                    ref var colorComponent = ref _colorPool.Get(hex);
                     colorComponent.Property.Value = _colorSettings.Get(record.ColorName);
                     colorComponent.Id = record.ColorName;
                     
-                    parentHexesComponent.Value.Add(entityId);
+                    //добавили хекс родителю 
+                    hexesComponent.Value.Add(hex);
+                    
+                    //установили родителя вьюхи хекса
+                    ref var parentComponent = ref _parentPool.Get(hex);
+                    parentComponent.Property.SetValueAndForceNotify(childRootComponent.Value);
                 }
             }
         }

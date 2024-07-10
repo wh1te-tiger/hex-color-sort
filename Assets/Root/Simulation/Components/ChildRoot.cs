@@ -4,7 +4,7 @@ namespace Root
 {
     public struct ChildRoot
     {
-        public Transform Value;
+        public readonly Transform Value;
 
         public ChildRoot(Transform value)
         {

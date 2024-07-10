@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dd85c845eb24648b7db27d6d089f6d1, type: 3}
-  m_Name: LevelSettings
+  m_Name: Core Settings
   m_EditorClassIdentifier: 
   <ColorSettings>k__BackingField: {fileID: 11400000, guid: 462dbe2a963b4354785df25aec632755, type: 2}
+  <Levels>k__BackingField: {fileID: 11400000, guid: 116b2fc4dc064564e823228577019da0, type: 2}
   <ContainerPrefab>k__BackingField: {fileID: 768400254465726113, guid: 33d2bcaaa54ac014c9524eb46c9433b0, type: 3}
   <HexPrefab>k__BackingField: {fileID: 6100512104770364514, guid: 90a47ad07933250469be0a2b738a5047, type: 3}

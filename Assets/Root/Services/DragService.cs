@@ -59,16 +59,20 @@ namespace Root
             return new Vector2(worldPoint.x, worldPoint.z);
         }
 
-        public bool IsOverCell(Vector3 pos, out Transform cell)
+        public bool IsOverFreeCell(Vector3 pos, out Transform cell)
         {
             cell = null;
             var screenPos = _camera.WorldToScreenPoint(pos);
             var ray = _camera.ScreenPointToRay(screenPos);
             
             if (!Physics.Raycast(ray, out var hit, 20, LayerMask.GetMask("Cell"))) return false;
+
+            var cellView = hit.transform.GetComponent<CellViewModel>();
+            if (!cellView.IsFree) return false;
             
-            cell = hit.transform;
+            cell = cellView.transform;
             return true;
+
         }
     }
 }

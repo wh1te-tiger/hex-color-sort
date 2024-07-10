@@ -6,7 +6,7 @@ namespace Root
 {
     public class CoreInstaller : MonoInstaller
     {
-        [SerializeField] private LevelSettings levelSettings;
+        [Inject] private CoreSettings coreSettings;
         
         #region InstallState
 
@@ -30,14 +30,15 @@ namespace Root
         
         void InstallSettings()
         {
-            Container.BindInstance(levelSettings).AsSingle();
-            Container.BindInstance(levelSettings.ColorSettings).AsSingle();
+            Container.BindInstance(coreSettings.ColorSettings).AsSingle();
+            Container.BindInstance(coreSettings.Levels).AsSingle();
         }
 
         void InstallFactories()
         {
-            Container.Bind<ContainerFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ContainerFactory>().AsSingle();
             Container.Bind<HexFactory>().AsSingle();
+            Container.Bind<FieldFactory>().AsSingle();
         }
 
         void InstallWorld()
@@ -51,15 +52,21 @@ namespace Root
         {
             Add<OnDragEventsSystem>();
             Add<RemoveDragEventsSystem>();
-            Add<RiseStackSystem>();
-            //Add<DropStackSystem>();
-            Add<HandleStackDropSystem>();
+            Add<ContainerRiseSystem>();
+            Add<ContainerDropSystem>();
             Add<HandleDragSystem>();
-            Add<SpawnContainersSystem>();
-            Add<PlaceContainersSystem>();
-            Add<FillContainerSystem>();
+            Add<ContainerSpawnSystem>();
+            Add<ContainerFillSystem>();
+            Add<ContainerHexSetPosition>();
+            Add<ContainerPlaceSystem>();
+            Add<ContainerActivateSystem>();
+            Add<ContainerUnloadSystem>();
+            Add<ContainerDeactivateSystem>();
+            Add<FindReceiverSystem>();
+            Add<AddSourceDelaySystem>();
+            Add<HexShiftSystem>();
             Add<OrganizeHexPositionSystem>();
-            Add<ActivateContainerSystem>();
+            Add<DelaySystem>();
             Add<MoveSystem>();
         }
 

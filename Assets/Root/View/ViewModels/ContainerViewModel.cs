@@ -14,6 +14,12 @@ namespace Root
             Add<InitRequest>();
         }
         
+        public void AddUnloadRequest(int entityId)
+        {
+            ref var c = ref Add<UnloadRequest>();
+            c.ReceiverId = entityId;
+        }
+        
         protected override void Setup()
         {
             ref var hexesComponent = ref Add<Hexes>();

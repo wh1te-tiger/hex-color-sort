@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Root
 {
-    [CreateAssetMenu(fileName = "Color Settings", menuName = "Game Settings / Color Settings", order = 0)]
+    [CreateAssetMenu(fileName = "Color Settings", menuName = "Configurations /Game Settings /Color Settings", order = 0)]
     public class ColorSettings : ScriptableObject
     {
         [SerializeField] private List<ColorPair> colors;

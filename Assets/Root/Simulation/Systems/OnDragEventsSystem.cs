@@ -10,7 +10,6 @@ namespace Root
         private EcsFilter _endDragFilter;
         private EcsFilter _selectedFilter;
         private EcsPool<BeginDragEvent> _beginDragPool;
-        private EcsPool<EndDragEvent> _endDragPool;
         private EcsPool<SelectedTag> _selectedPool;
 
         public OnDragEventsSystem(DragService dragService)
@@ -27,7 +26,6 @@ namespace Root
             _selectedFilter = world.Filter<SelectedTag>().End();
             
             _beginDragPool = world.GetPool<BeginDragEvent>();
-            _endDragPool = world.GetPool<EndDragEvent>();
             _selectedPool = world.GetPool<SelectedTag>();
         }
         
@@ -42,9 +40,6 @@ namespace Root
             
             foreach (var entity in _endDragFilter)
             {
-                //ref var dragEvent = ref _endDragPool.Get(entity);
-                //var pointerData = dragEvent.PointerEventData;
-                //_dragService.HandleEndDragEvent(pointerData);
                 foreach (var e in _selectedFilter)
                 {
                     _selectedPool.Del(e);

@@ -5,11 +5,12 @@ namespace Root
 {
     public class OrganizeHexPositionSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private EcsFilter _initRequestFilter;
         private EcsPool<Position> _positionPool;
+        private EcsPool<Destination> _destinationPool;
         private EcsPool<Hexes> _hexesPool;
-        private EcsPool<ChildRoot> _childRootPool;
-        private EcsPool<Parent> _parentPool;
+        private EcsPool<Organized> _organizedPool;
+        
+        private readonly EventListener _eventListener = new();
 
         private const float HexHeight = 0.15f;
         
@@ -17,32 +18,35 @@ namespace Root
         {
             var world = systems.GetWorld();
 
-            _initRequestFilter = world.Filter<InitRequest>().Inc<Hexes>().Inc<ChildRoot>().End();
+            var filter = world.Filter<Source>().Inc<Hexes>().Exc<Organized>().End();
+            filter.AddEventListener(_eventListener);
             
             _positionPool = world.GetPool<Position>();
-            _parentPool = world.GetPool<Parent>();
+            _destinationPool = world.GetPool<Destination>();
             _hexesPool = world.GetPool<Hexes>();
-            _childRootPool = world.GetPool<ChildRoot>();
+            _organizedPool = world.GetPool<Organized>();
         }
 
         public void Run(IEcsSystems systems)
         {
-            foreach (var e in _initRequestFilter)
+            foreach (var e in _eventListener.OnAdd)
             {
-                ref var childRootComponent = ref _childRootPool.Get(e);
+                var parentPos = _positionPool.Get(e).Property.Value;
+                    
                 ref var hexesComponent = ref _hexesPool.Get(e);
                 for (var index = 0; index < hexesComponent.Value.Count; index++)
                 {
                     var hexEntity = hexesComponent.Value[index];
-                    
-                    ref var parentComponent = ref _parentPool.Get(hexEntity);
-                    parentComponent.Property.Value = childRootComponent.Value;
 
-                    var parentPos = parentComponent.Property.Value.position;
-                    ref var positionComponent = ref _positionPool.Get(hexEntity);
-                    positionComponent.Property.Value = new Vector3(parentPos.x, index * HexHeight, parentPos.z);
+                    if (!_destinationPool.Has(hexEntity)) _destinationPool.Add(hexEntity);
+                    
+                    ref var destinationComponent = ref _destinationPool.Get(hexEntity);
+                    destinationComponent.Value = new Vector3(parentPos.x, index * HexHeight, parentPos.z);
                 }
+
+                _organizedPool.Add(e);
             }
+            _eventListener.OnAdd.Clear();
         }
     }
 }

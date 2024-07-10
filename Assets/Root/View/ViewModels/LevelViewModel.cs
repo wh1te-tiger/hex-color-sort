@@ -4,9 +4,9 @@ namespace Root
 {
     public class LevelViewModel : MonoBehaviour
     {
-        [SerializeField] private Transform fieldRoot;
+        [field: SerializeField] public Transform FieldRoot { get; private set; }
         [field: SerializeField] public Transform SlotsRoot { get; private set; }
         [field: SerializeField] public Transform SlotsSpawnPos { get; private set; }
-        
+        [field: SerializeField] public Transform HexContainer { get; private set; }
     }
 }

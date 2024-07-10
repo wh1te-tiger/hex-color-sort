@@ -2,14 +2,14 @@
 
 namespace Root
 {
-    public class SpawnContainersSystem : IEcsInitSystem, IEcsRunSystem
+    public class ContainerSpawnSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly ContainerFactory _containerFactory;
         
         private EcsFilter _emptySlotsFilter;
         private EcsPool<EmptySlotsEvent> _emptySlotsPool;
 
-        public SpawnContainersSystem(ContainerFactory containerFactory)
+        public ContainerSpawnSystem(ContainerFactory containerFactory)
         {
             _containerFactory = containerFactory;
         }

@@ -21,6 +21,7 @@ namespace Root
             colorComponent.Property = new ReactiveProperty<UnityEngine.Color>();
             colorComponent.Property
                 .ObserveEveryValueChanged(p=> p.Value)
+                .Skip(1)
                 .Subscribe(SetColor)
                 .AddTo(this);
         }
@@ -30,7 +31,5 @@ namespace Root
             _propertyBlock.SetColor(ColorPropertyId, color);
             meshRenderer.SetPropertyBlock(_propertyBlock);
         }
-
-        
     }
 }

@@ -5,9 +5,9 @@ namespace Root
 {
     public class HexFactory : EntityProviderFactory<HexViewModel>
     {
-        private readonly LevelSettings _settings;
+        private readonly CoreSettings _settings;
         
-        public HexFactory(EcsWorld world, LevelSettings settings) : base(world)
+        public HexFactory(EcsWorld world, CoreSettings settings) : base(world)
         {
             _settings = settings;
         }
@@ -15,7 +15,9 @@ namespace Root
         protected override HexViewModel CreateFunc()
         {
             var container = Object.Instantiate(_settings.HexPrefab).GetComponent<HexViewModel>();
-            container.GetComponent<EntityConverter>().Convert(World);
+            var entity = World.NewEntity();
+            Dictionary.Add(container, entity);
+            container.GetComponent<EntityConverter>().Convert(World, entity);
             return container;
         }
     }

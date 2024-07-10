@@ -2,11 +2,12 @@
 
 namespace Root
 {
-    public class ActivateContainerSystem : IEcsInitSystem, IEcsRunSystem
+    public class ContainerActivateSystem : IEcsInitSystem, IEcsRunSystem
     {
         private EcsFilter _initRequestFilter;
         private EcsPool<InitRequest> _initRequestPool;
         private EcsPool<Active> _activePool;
+        private EcsPool<Organized> _organizedPool;
         
         public void Init(IEcsSystems systems)
         {
@@ -16,6 +17,7 @@ namespace Root
 
             _initRequestPool = world.GetPool<InitRequest>();
             _activePool = world.GetPool<Active>();
+            _organizedPool = world.GetPool<Organized>();
         }
 
         public void Run(IEcsSystems systems)
@@ -25,6 +27,7 @@ namespace Root
                 ref var activeComponent = ref _activePool.Get(e);
                 activeComponent.Property.Value = true;
                 _initRequestPool.Del(e);
+                _organizedPool.Del(e);
             }
         }
     }

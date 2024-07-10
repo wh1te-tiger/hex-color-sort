@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class RiseStackSystem : IEcsInitSystem, IEcsRunSystem
+    public class ContainerRiseSystem : IEcsInitSystem, IEcsRunSystem
     {
         private EcsPool<Destination> _destinationPool;
         private readonly EventListener _eventListener = new();

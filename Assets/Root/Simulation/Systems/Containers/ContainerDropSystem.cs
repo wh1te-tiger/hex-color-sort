@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class HandleStackDropSystem : IEcsInitSystem, IEcsRunSystem
+    public class ContainerDropSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly DragService _dragService;
         
@@ -12,7 +12,7 @@ namespace Root
         private EcsPool<Parent> _parentPool;
         private readonly EventListener _eventListener = new();
 
-        public HandleStackDropSystem(DragService dragService)
+        public ContainerDropSystem(DragService dragService)
         {
             _dragService = dragService;
         }
@@ -39,7 +39,7 @@ namespace Root
                 
                 Vector3 desPos;
                 ref var parentComponent = ref _parentPool.Get(entity);
-                if (_dragService.IsOverCell(pos, out var transform))
+                if (_dragService.IsOverFreeCell(pos, out var transform))
                 {
                     desPos = transform.position;
                     parentComponent.Property.Value = null;
