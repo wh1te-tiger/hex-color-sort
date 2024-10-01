@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0da48ea13c84707a65cda72a180360f, type: 3}
+  m_Name: ViewSettings
+  m_EditorClassIdentifier: 
+  <CellPrefab>k__BackingField: {fileID: 7053883035693589498, guid: 545417a06cc3d934bbfcd9389a8f7441,
+    type: 3}
+  <HexPrefab>k__BackingField: {fileID: 273767117472703887, guid: f9a69e98769225b49a42e8b431d108fa,
+    type: 3}
+  <BaseCellColor>k__BackingField: {r: 0.24705882, g: 0.24705882, b: 0.39607844, a: 1}
+  <HighlightedCellColor>k__BackingField: {r: 0.3254902, g: 0.3254902, b: 0.46666667,
+    a: 1}

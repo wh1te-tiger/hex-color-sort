@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2bc1e44528c4bdbbe07f7a4fa5c1dcc, type: 3}
+  m_Name: Color Settings
+  m_EditorClassIdentifier: 
+  colors:
+  - id: 6
+    color: {r: 0.9490196, g: 0.9490196, b: 0.9490196, a: 1}
+  - id: 5
+    color: {r: 0.142, g: 0.142, b: 0.142, a: 1}
+  - id: 4
+    color: {r: 0.4392157, g: 0.43529412, b: 0.827451, a: 1}
+  - id: 3
+    color: {r: 1, g: 0.69411767, b: 0.25882354, a: 1}
+  - id: 2
+    color: {r: 0.20392157, g: 0.6745098, b: 0.8784314, a: 1}
+  - id: 1
+    color: {r: 0.2, g: 0.8509804, b: 0.69803923, a: 1}
+  - id: 0
+    color: {r: 1, g: 0.32156864, b: 0.32156864, a: 1}
+  countColorProbability:
+    m_Mode: 2
+    m_CurveMultiplier: 1
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 0

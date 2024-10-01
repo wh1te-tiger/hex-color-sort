@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Game/MainMenu/MainMenuStyle.uxml.uss?fileID=7433441132597879392&amp;guid=a1e539c6b51815e448462419ffd8f14b&amp;type=3#MainMenuStyle.uxml" />
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:Label text="Level 1-1" name="Header" class="header" />
+        <ui:Button text="PLAY" name="PlayButton" enable-rich-text="false" class="button" style="align-self: center; justify-content: flex-end; align-items: center;" />
+    </ui:VisualElement>
+</ui:UXML>
