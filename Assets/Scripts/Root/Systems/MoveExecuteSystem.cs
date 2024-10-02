@@ -2,7 +2,7 @@
 
 namespace Scripts
 {
-    public class ReturnHexesSystem : IEcsInitSystem, IEcsRunSystem
+    public class MoveExecuteSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly GameFlowService _gameFlowService;
         
@@ -12,7 +12,7 @@ namespace Scripts
         private EcsPool<MoveProcess> _moveProcessPool;
         private EcsPool<Hex> _hexPool;
 
-        public ReturnHexesSystem(GameFlowService gameFlowService)
+        public MoveExecuteSystem(GameFlowService gameFlowService)
         {
             _gameFlowService = gameFlowService;
         }

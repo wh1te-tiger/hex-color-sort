@@ -18,8 +18,8 @@ namespace Scripts
         public void Init(IEcsSystems systems)
         {
             var world = systems.GetWorld();
-            _filter = world.Filter<TProcess>().Inc<Process>().End();
-            _started = world.Filter<Started<TProcess>>().End();
+            _filter = world.Filter<TProcess>().Inc<Process>().Exc<Delay>().End();
+            _started = world.Filter<Started<TProcess>>().Exc<Delay>().End();
             _completed = world.Filter<Completed<TProcess>>().Inc<HasActiveProcess>().End();
 
             _processPool = world.GetPool<Process>();

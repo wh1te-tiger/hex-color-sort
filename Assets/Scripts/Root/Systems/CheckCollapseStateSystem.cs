@@ -14,6 +14,7 @@ namespace Scripts
         private EcsFilter _hexFilter;
         
         private EcsPool<Hex> _hexPool;
+        private EcsPool<Cell> _cellPool;
         private EcsPool<CollapseRequest> _collapseRequestPool;
 
         public CheckCollapseStateSystem(GameFlowService gameFlowService, HexService hexService)
@@ -29,6 +30,7 @@ namespace Scripts
             _cellFilter = _world.Filter<Cell>().Exc<Empty>().End();
             _hexFilter = _world.Filter<Hex>().End();
             _hexPool = _world.GetPool<Hex>();
+            _cellPool = _world.GetPool<Cell>();
             _collapseRequestPool = _world.GetPool<CollapseRequest>();
         }
 
@@ -46,7 +48,9 @@ namespace Scripts
                         var hex = _hexPool.Get(h);
                         if (hex.Target.Id == e)
                         {
-                            _collapseRequestPool.Add(h);
+                            var cell = _cellPool.Get(e);
+                            ref var c = ref _collapseRequestPool.Add(h);
+                            c.Delay = cell.Count - 1 - hex.Index;
                         }
                     }
                 }

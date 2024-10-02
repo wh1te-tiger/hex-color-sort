@@ -4,6 +4,7 @@ namespace Scripts
 {
     public class MarkDraggingSystem : IEcsInitSystem, IEcsRunSystem
     {
+        private EcsWorld _world;
         private EcsFilter _selectedFilter;
         private EcsFilter _hexFiler;
         private EcsPool<Hex> _hexPool;
@@ -12,14 +13,14 @@ namespace Scripts
 
         public void Init(IEcsSystems systems)
         {
-            var world = systems.GetWorld();
+            _world = systems.GetWorld();
             
-            _hexFiler = world.Filter<Hex>().End();
-            _selectedFilter = world.Filter<Selected>().End();
+            _hexFiler = _world.Filter<Hex>().End();
+            _selectedFilter = _world.Filter<Selected>().End();
             _selectedFilter.AddEventListener(_eventListener);
             
-            _hexPool = world.GetPool<Hex>();
-            _draggingPool = world.GetPool<Dragging>();
+            _hexPool = _world.GetPool<Hex>();
+            _draggingPool = _world.GetPool<Dragging>();
         }
 
         public void Run(IEcsSystems systems)
@@ -29,9 +30,10 @@ namespace Scripts
                 foreach (var eHex in _hexFiler)
                 {
                     ref var hex = ref _hexPool.Get(eHex);
-                    if ( hex.Target.Id != e ) continue;
 
-                    _draggingPool.Add(eHex);
+                    if (!hex.Target.Unpack(_world, out var target)) continue;
+                    
+                    if ( target == e) _draggingPool.Add(eHex);
                 }
             }
             

@@ -25,7 +25,7 @@ namespace Scripts
         {
             _world = systems.GetWorld();
 
-            _shiftFilter = _world.Filter<Started<ShiftProcess>>().Inc<MonoLink<Transform>>().End();
+            _shiftFilter = _world.Filter<Started<ShiftProcess>>().Inc<MonoLink<Transform>>().Exc<Delay>().End();
             _startedPool = _world.GetPool<Started<ShiftProcess>>();
             _shiftPool = _world.GetPool<ShiftProcess>();
             _transformPool = _world.GetPool<MonoLink<Transform>>();
@@ -50,7 +50,6 @@ namespace Scripts
                     transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
                     var sequence = DOTween.Sequence();
                     sequence
-                        .SetDelay(shifting.Delay)
                         //TODO: move to settings
                         .Append(transform.DOJump(targetPos, 1, 1, 0.15f))
                         .Join(transform.DORotate(new Vector3(180, transform.rotation.eulerAngles.y, 0), 0.15f,
@@ -60,7 +59,7 @@ namespace Scripts
                             transform.rotation = Quaternion.identity;
                         });
                 
-                    _gameFlowService.SetDurationToProcess(processLink.ProcessEntity, sequence.Duration() + shifting.Delay);
+                    _gameFlowService.SetDurationToProcess(processLink.ProcessEntity, sequence.Duration());
                 }
             }
         }

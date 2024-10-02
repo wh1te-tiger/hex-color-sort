@@ -1,4 +1,5 @@
 ﻿using Leopotam.EcsLite;
+using UnityEngine;
 
 namespace Scripts
 {
@@ -6,6 +7,7 @@ namespace Scripts
     {
         private readonly EcsPool<HasActiveProcess> _activeProcessPool;
         private readonly EcsPool<Process> _processPool;
+        private readonly EcsPool<Delay> _delayPool;
         private readonly EcsFilter _acting;
         private readonly EcsFilter _emptySlots;
 
@@ -16,6 +18,8 @@ namespace Scripts
         {
             _processPool = w.GetPool<Process>();
             _activeProcessPool = w.GetPool<HasActiveProcess>();
+            _delayPool = w.GetPool<Delay>();
+            
             _acting = w.Filter<HasActiveProcess>().End();
             _emptySlots = w.Filter<Slot>().Inc<Empty>().End();
         }
@@ -31,6 +35,27 @@ namespace Scripts
             process.Target = world.PackEntity(entity);
             ref var activeProc = ref _activeProcessPool.GetOrAdd(entity);
             activeProc.Process.Add(processEntity);
+            
+            world.GetPool<Started<TProcess>>().Add(entity) = new Started<TProcess>(processEntity);
+            return ref pool.Add(processEntity);
+        }
+        
+        public ref TProcess StartNewProcess<TProcess>(EcsPool<TProcess> pool, int entity, float delay) where TProcess : struct, IProcessData
+        {
+            var world = pool.GetWorld();
+            var processEntity = world.NewEntity();
+            ref var process = ref _processPool.Add(processEntity);
+            process.Phase = StatePhase.OnStart;
+            process.Target = world.PackEntity(entity);
+            
+            ref var activeProc = ref _activeProcessPool.GetOrAdd(entity);
+            activeProc.Process.Add(processEntity);
+            
+            ref var delayComponent = ref _delayPool.Add(processEntity);
+            delayComponent.Value = delay;
+            
+            delayComponent = ref _delayPool.Add(entity);
+            delayComponent.Value = delay;
             
             world.GetPool<Started<TProcess>>().Add(entity) = new Started<TProcess>(processEntity);
             return ref pool.Add(processEntity);

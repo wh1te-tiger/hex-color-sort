@@ -47,6 +47,7 @@ namespace Scripts
                         foreach (var h in _hexFilter)
                         {
                             ref var hex = ref _hexPool.Get(h);
+                            if (!hex.Target.Unpack(_world, out _)) continue;
                             if (hex.Target.Id != s) continue;
                             
                             var oldTarget = hex.Target;

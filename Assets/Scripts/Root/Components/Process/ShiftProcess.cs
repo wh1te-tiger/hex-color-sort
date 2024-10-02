@@ -6,6 +6,5 @@ namespace Scripts
     {
         public EcsPackedEntity Target;
         public int Height;
-        public float Delay;
     }
 }

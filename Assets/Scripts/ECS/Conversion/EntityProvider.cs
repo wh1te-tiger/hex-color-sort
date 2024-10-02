@@ -6,6 +6,8 @@ namespace Scripts
     [DisallowMultipleComponent]
     public class EntityProvider : MonoBehaviour
     {
+        [field: SerializeField] public int ID { get;  private set; }
+
         #region State
 
         private EcsPackedEntity _entity;
@@ -24,6 +26,7 @@ namespace Scripts
             ConvertComponents();
             
             _isInitialized = true;
+            ID = _entity.Id;
             return true;
         }
 

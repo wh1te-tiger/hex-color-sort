@@ -34,6 +34,14 @@ namespace Scripts
             var fieldFactory = new FieldFactory(_world, fieldService, fieldSettings);
             var hexFactory = new HexViewFactory(_world, viewSettings, null);
             
+#if UNITY_EDITOR
+                // Регистрируем отладочные системы по контролю за состоянием каждого отдельного мира:
+                // .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ("events"))
+                _systems.Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem());
+                // Регистрируем отладочные системы по контролю за текущей группой систем. 
+                _systems.Add(new Leopotam.EcsLite.UnityEditor.EcsSystemsDebugSystem());
+#endif
+
             _systems.Add(new InputSystem());
             _systems.Add(new HandleDragSystem(dragService));
             _systems.Add(new HandleDragStartedSystem(dragService));
@@ -45,24 +53,27 @@ namespace Scripts
             _systems.Add(new CreateHexesSystem(gameFlowService, colorSettings));
             _systems.Add(new CreateFieldViewSystem(viewSettings, fieldRoot));
             
-            
             _systems.Add(new MarkDraggingSystem());
             _systems.Add(new UnmarkDraggingSystem());
             _systems.Add(new TargetChangedEventSystem());
             _systems.Add(new DelaySystem());
-            _systems.Add(new ProcessSystem<ShiftProcess>());
-            _systems.Add(new ProcessSystem<MoveProcess>());
             
             _systems.Add(new PickCellSystem(fieldService, hexService, gameFlowService));
-            _systems.Add(new ShiftExecuteSystem(gameFlowService));
-            _systems.Add(new ReturnHexesSystem(gameFlowService));
             _systems.Add(new CheckCollapseStateSystem(gameFlowService, hexService));
+            _systems.Add(new ShiftExecuteSystem(gameFlowService));
+            _systems.Add(new CollapseExecuteSystem(gameFlowService));
+            _systems.Add(new MoveExecuteSystem(gameFlowService));
             
             _systems.Add(new CreateHexViewSystem(hexFactory, colorSettings));
             _systems.Add(new ShiftViewSystem(gameFlowService));
             _systems.Add(new MoveViewSystem(gameFlowService));
+            _systems.Add(new CollapseViewSystem(gameFlowService));
             _systems.Add(new HexOrderViewSystem());
             _systems.Add(new HighlightSystem(viewSettings));
+            
+            _systems.Add(new ProcessSystem<ShiftProcess>());
+            _systems.Add(new ProcessSystem<MoveProcess>());
+            _systems.Add(new ProcessSystem<CollapseProcess>());
             
             _systems.Init();
         }

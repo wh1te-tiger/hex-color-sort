@@ -65,7 +65,7 @@ namespace Scripts
                     hex.Target = _world.PackEntity(to);
                     hex.Index = newIndex;
                     
-                    //TODO: replace with settings;
+                    //TODO: replace with settings or move delay to view system
                     var delay = (newIndex - toCount) * 0.1f;
                     StartShiftProcess(h, to, newIndex + 1, delay);
 
@@ -78,10 +78,9 @@ namespace Scripts
 
         private void StartShiftProcess(int e, int target, int height, float delay)
         {
-            ref var shiftProcess = ref _gameFlowService.StartNewProcess(_shiftingPool, e);
+            ref var shiftProcess = ref _gameFlowService.StartNewProcess(_shiftingPool, e, delay);
             shiftProcess.Target = _world.PackEntity(target);
             shiftProcess.Height = height;
-            shiftProcess.Delay = delay;
         }
     }
 }
