@@ -41,7 +41,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3736541902753620592}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 735476be94c6c8441b7266de55b1aaf3, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 76744b43e89cdf54ea6973b4cff3263a, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -51,13 +51,13 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 1
+      - m_Value: 0.5
         m_Name: Duration
-        m_Overridden: 0
-      - m_Value: 1
-        m_Name: Speed_min
         m_Overridden: 1
       - m_Value: 1.5
+        m_Name: Speed_min
+        m_Overridden: 1
+      - m_Value: 2
         m_Name: Speed_max
         m_Overridden: 1
     m_Vector2f:

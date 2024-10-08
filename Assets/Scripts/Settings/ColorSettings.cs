@@ -37,13 +37,13 @@ namespace Scripts
         public IEnumerable<ColorId> GetRandomColors(int count)
         {
             var rnd = new Random();
-            return  Enumerable
+            return Enumerable
                 .Range(0, count)
                 .Select(_ => rnd.Next(0, 1 + colors.Count - count))
                 .OrderBy(x => x)
                 .Select((x, i) => colors[x + i].id);
         }
-
+        
         public int GetColorsCount(int count)
         {
             return Mathf.CeilToInt(countColorProbability.Evaluate(count));
