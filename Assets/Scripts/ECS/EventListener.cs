@@ -7,15 +7,23 @@ namespace Scripts
     {
         public readonly Collector OnAdd = new();
         public readonly Collector OnRemove = new();
+        public event Action OnAdded;
+        public event Action OnRemoved;
         
         public void OnEntityAdded(int entity)
         {
-            OnAdd.Add(entity);
+            if (OnAdd.Add(entity))
+            {
+                OnAdded?.Invoke();
+            }
         }
 
         public void OnEntityRemoved(int entity)
         {
-            OnRemove.Add(entity);
+            if (OnRemove.Add(entity))
+            {
+                OnRemoved?.Invoke();
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Field
+namespace Scripts
 {
     public class EditorFieldCell : MonoBehaviour
     {

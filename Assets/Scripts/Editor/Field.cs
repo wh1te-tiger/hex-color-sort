@@ -1,5 +1,4 @@
-﻿using Field;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Scripts
 {

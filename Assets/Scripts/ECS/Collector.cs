@@ -7,9 +7,9 @@ namespace Scripts
     {
         private readonly HashSet<int> _values = new();
         
-        public void Add(int entity)
+        public bool Add(int entity)
         {
-            _values.Add(entity);
+            return _values.Add(entity);
         }
 
         public void Clear()

@@ -16,6 +16,15 @@ MonoBehaviour:
     type: 3}
   <HexPrefab>k__BackingField: {fileID: 273767117472703887, guid: f9a69e98769225b49a42e8b431d108fa,
     type: 3}
-  <BaseCellColor>k__BackingField: {r: 0.24705882, g: 0.24705882, b: 0.39607844, a: 1}
-  <HighlightedCellColor>k__BackingField: {r: 0.3254902, g: 0.3254902, b: 0.46666667,
+  <BaseCellColor>k__BackingField: {r: 0.5058824, g: 0.48235294, b: 0.43137255, a: 1}
+  <MainMenuCellColor>k__BackingField: {r: 0.24705882, g: 0.24705882, b: 0.39607844,
     a: 1}
+  <HighlightedCellColor>k__BackingField: {r: 0.6, g: 0.572093, b: 0.5116279, a: 1}
+  <CollapseEffect>k__BackingField: {fileID: 5475161679286971364, guid: 9f529a0342aa9be43bb00760a9349165,
+    type: 3}
+  <HexHorizontalSpeed>k__BackingField: 30
+  <HexVerticalSpeed>k__BackingField: 15
+  <HexSpacing>k__BackingField: 0.1
+  <HexFlightHeight>k__BackingField: 1.5
+  <ShiftDuration>k__BackingField: 0.3
+  <CollapseDuration>k__BackingField: 0.3
