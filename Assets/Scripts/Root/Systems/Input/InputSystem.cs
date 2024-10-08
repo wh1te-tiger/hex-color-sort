@@ -34,24 +34,8 @@ namespace Scripts
 
             if (Input.GetMouseButtonUp(0))
             {
-                ref DragEnded ended = ref _dragEndedPool.Send();
-                ended.MousePosition = Input.mousePosition;
+                _dragEndedPool.Send();
             }
         }
-    }
-
-    public struct DragEnded
-    {
-        public Vector2 MousePosition;
-    }
-
-    public struct Drag
-    {
-        public Vector2 MousePosition;
-    }
-
-    public struct DragStarted
-    {
-        public Vector2 MousePosition;
     }
 }

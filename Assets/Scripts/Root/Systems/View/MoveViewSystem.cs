@@ -11,11 +11,11 @@ namespace Scripts
         private EcsWorld _world;
         
         private EcsFilter _moveFilter;
+        private readonly EventListener _eventListener = new();
         private EcsPool<Started<MoveProcess>> _startedPool;
         private EcsPool<MoveProcess> _movePool;
+        private EcsPool<Process> _processPool;
         private EcsPool<MonoLink<Transform>> _transformPool;
-        private EcsPool<WorldPosition> _worldPosPool;
-        private EcsPool<HeightOffset> _offsetPool;
 
         public MoveViewSystem(GameFlowService gameFlowService)
         {
@@ -25,41 +25,45 @@ namespace Scripts
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _moveFilter = _world.Filter<Started<MoveProcess>>().Inc<MonoLink<Transform>>().End();
-            _startedPool = _world.GetPool<Started<MoveProcess>>();
+            _moveFilter = _world.Filter<MoveProcess>().Exc<Delay>().End();
+            _moveFilter.AddEventListener(_eventListener);
+            _processPool = _world.GetPool<Process>();
             _movePool = _world.GetPool<MoveProcess>();
             _transformPool = _world.GetPool<MonoLink<Transform>>();
-            _worldPosPool = _world.GetPool<WorldPosition>();
-            _offsetPool = _world.GetPool<HeightOffset>();
         }
         
         public void Run(IEcsSystems systems)
         {
-            foreach (var e in _moveFilter)
+            foreach (var e in _eventListener.OnAdd)
             {
-                Started<MoveProcess> processLink = _startedPool.Get(e);
-                MoveProcess moving = processLink.GetProcessData(_movePool);
-                Transform transform = _transformPool.Get(e).Value;
+                Process process = _processPool.Get(e);
+                MoveProcess moving =  _movePool.Get(e);
+                Transform transform = _transformPool.Get(process.Target.Id).Value;
+                
+                var targetPos = transform.position + moving.Offset;
+                var offsetX = moving.Offset.x;
+                var offsetY = moving.Offset.y;
+                var offsetZ = moving.Offset.z;
+                var distance = Vector3.Distance(transform.position, targetPos);
+                var duration = distance / moving.Speed;
 
-                if (moving.Target.Unpack(_world, out var target))
+                if (offsetX != 0)
                 {
-                    var offset = 0f;
-                    if (_offsetPool.Has(target))
-                    {
-                        offset = _offsetPool.Get(target).Value;
-                    }
-                    
-                    var targetPos = _worldPosPool.Get(target).Value;
-                    targetPos += Vector3.up * (transform.position.y + offset);
-                    
-                    var distance = Vector3.Distance(transform.position, targetPos);
-                    var duration = distance / 30f;
-                    
-                    transform.DOMove(targetPos, duration);
-
-                    _gameFlowService.SetDurationToProcess(processLink.ProcessEntity, duration + moving.Delay);
+                    transform.DOMoveX(targetPos.x, duration);
                 }
+                if (offsetY != 0)
+                {
+                    transform.DOMoveY(targetPos.y, duration);
+                }
+                if (offsetZ != 0)
+                {
+                    transform.DOMoveZ(targetPos.z, duration);
+                }
+                
+                _gameFlowService.SetDurationToProcess(e, duration);
             }
+            
+            _eventListener.OnAdd.Clear();
         }
     }
 }

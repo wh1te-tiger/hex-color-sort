@@ -4,7 +4,7 @@ namespace Scripts
 {
     public class UnmarkDraggingSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private EcsFilter _selectedFilter;
+        private EcsFilter _selectedSlotFilter;
         private EcsFilter _hexFiler;
         private EcsPool<Dragging> _draggingPool;
         private readonly EventListener _eventListener = new();
@@ -14,8 +14,8 @@ namespace Scripts
             var world = systems.GetWorld();
             
             _hexFiler = world.Filter<Hex>().End();
-            _selectedFilter = world.Filter<Selected>().End();
-            _selectedFilter.AddEventListener(_eventListener);
+            _selectedSlotFilter = world.Filter<Slot>().Inc<Selected>().End();
+            _selectedSlotFilter.AddEventListener(_eventListener);
             
             _draggingPool = world.GetPool<Dragging>();
         }

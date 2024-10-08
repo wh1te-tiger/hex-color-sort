@@ -5,23 +5,35 @@ namespace Scripts
 {
     public class GameFlowService
     {
+        public bool IsAnyoneActing => _acting.GetEntitiesCount() > 0;
+        public bool IsHexCreationNeeded => _emptySlots.GetEntitiesCount() == 3;
+        public bool IsDragging => _dragging.GetEntitiesCount() == 1;
+        public int Score { get; private set; }
+        
         private readonly EcsPool<HasActiveProcess> _activeProcessPool;
         private readonly EcsPool<Process> _processPool;
         private readonly EcsPool<Delay> _delayPool;
+        
         private readonly EcsFilter _acting;
         private readonly EcsFilter _emptySlots;
-
-        public bool IsAnyoneActing => _acting.GetEntitiesCount() > 0;
-        public bool IsHexCreationNeeded => _emptySlots.GetEntitiesCount() == 3;
+        private readonly EventListener _eventListener = new();
+        private readonly EcsFilter _dragging;
 
         public GameFlowService(EcsWorld w)
         {
+            _acting = w.Filter<HasActiveProcess>().End();
+            _emptySlots = w.Filter<Slot>().Inc<Empty>().End();
+            _dragging = w.Filter<Slot>().Inc<Selected>().End();
+            var collapsedFilter = w.Filter<CollapseRequest>().End();
+            collapsedFilter.AddEventListener(_eventListener);
+            _eventListener.OnAdded += () =>
+            {
+                Score++;
+            };
+            
             _processPool = w.GetPool<Process>();
             _activeProcessPool = w.GetPool<HasActiveProcess>();
             _delayPool = w.GetPool<Delay>();
-            
-            _acting = w.Filter<HasActiveProcess>().End();
-            _emptySlots = w.Filter<Slot>().Inc<Empty>().End();
         }
 
         #region Process
@@ -36,7 +48,6 @@ namespace Scripts
             ref var activeProc = ref _activeProcessPool.GetOrAdd(entity);
             activeProc.Process.Add(processEntity);
             
-            world.GetPool<Started<TProcess>>().Add(entity) = new Started<TProcess>(processEntity);
             return ref pool.Add(processEntity);
         }
         
@@ -57,7 +68,6 @@ namespace Scripts
             delayComponent = ref _delayPool.Add(entity);
             delayComponent.Value = delay;
             
-            world.GetPool<Started<TProcess>>().Add(entity) = new Started<TProcess>(processEntity);
             return ref pool.Add(processEntity);
         }
         

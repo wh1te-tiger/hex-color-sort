@@ -5,12 +5,19 @@ namespace Scripts
 {
     public class HexOrderViewSystem : IEcsInitSystem, IEcsRunSystem
     {
+        private readonly ViewSettings _viewSettings;
+        
         private EcsWorld _world;
         private EcsFilter _unorderedFilter;
         private EcsPool<Unordered> _unorderedPool;
         private EcsPool<Hex> _hexPool;
         private EcsPool<MonoLink<Transform>> _transformPool;
         private EcsPool<HeightOffset> _heightOffsetPool;
+
+        public HexOrderViewSystem(ViewSettings viewSettings)
+        {
+            _viewSettings = viewSettings;
+        }
 
         public void Init(IEcsSystems systems)
         {
@@ -37,7 +44,7 @@ namespace Scripts
                 }
                 
                 var transform = _transformPool.Get(e).Value;
-                transform.position += Vector3.up * (hex.Index * 0.3f + offset);
+                transform.position += Vector3.up * (hex.Index * (_viewSettings.HexHeight + _viewSettings.HexSpacing) + offset);
                 _unorderedPool.Del(e);
             }
         }

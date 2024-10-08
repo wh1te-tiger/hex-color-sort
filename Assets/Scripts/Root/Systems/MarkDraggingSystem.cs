@@ -16,7 +16,7 @@ namespace Scripts
             _world = systems.GetWorld();
             
             _hexFiler = _world.Filter<Hex>().End();
-            _selectedFilter = _world.Filter<Selected>().End();
+            _selectedFilter = _world.Filter<Selected>().Inc<Slot>().End();
             _selectedFilter.AddEventListener(_eventListener);
             
             _hexPool = _world.GetPool<Hex>();

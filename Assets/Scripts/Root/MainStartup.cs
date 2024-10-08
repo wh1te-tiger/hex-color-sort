@@ -8,7 +8,6 @@ namespace Scripts
         [SerializeField] private FieldSettings fieldSettings;
         [SerializeField] private ViewSettings viewSettings;
         [SerializeField] private ColorSettings colorSettings;
-        [SerializeField] private PointToHex pointToHex;
         
         private EcsWorld _world;
         private IEcsSystems _systems;
@@ -27,11 +26,11 @@ namespace Scripts
             _systems.Add(new ProcessSystem<ShiftProcess>());
 
             _systems.Add(new DelaySystem());
-            _systems.Add(new HexOrderViewSystem());
+            _systems.Add(new HexOrderViewSystem(viewSettings));
             _systems.Add(new PickRandomCellSystem(fieldService, hexService, gameFlowService));
             _systems.Add(new ShiftExecuteSystem(gameFlowService));
             _systems.Add(new TargetChangedEventSystem());
-            _systems.Add(new ShiftViewSystem(gameFlowService));
+            _systems.Add(new ShiftViewSystem(gameFlowService, viewSettings));
             _systems.Init();
             
             foreach (var cellData in fieldSettings.cells)

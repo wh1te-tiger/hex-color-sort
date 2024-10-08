@@ -7,26 +7,30 @@ namespace Scripts
     public class ShiftViewSystem : IEcsInitSystem, IEcsRunSystem
     {
         private readonly GameFlowService _gameFlowService;
+        private readonly ViewSettings _viewSettings;
 
         private EcsWorld _world;
         
         private EcsFilter _shiftFilter;
-        private EcsPool<Started<ShiftProcess>> _startedPool;
+        private readonly EventListener _eventListener = new();
+        private EcsPool<Process> _processPool;
         private EcsPool<ShiftProcess> _shiftPool;
         private EcsPool<MonoLink<Transform>> _transformPool;
         private EcsPool<WorldPosition> _worldPosPool;
 
-        public ShiftViewSystem(GameFlowService gameFlowService)
+        public ShiftViewSystem(GameFlowService gameFlowService, ViewSettings viewSettings)
         {
             _gameFlowService = gameFlowService;
+            _viewSettings = viewSettings;
         }
         
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
 
-            _shiftFilter = _world.Filter<Started<ShiftProcess>>().Inc<MonoLink<Transform>>().Exc<Delay>().End();
-            _startedPool = _world.GetPool<Started<ShiftProcess>>();
+            _shiftFilter = _world.Filter<ShiftProcess>().Exc<Delay>().End();
+            _shiftFilter.AddEventListener(_eventListener);
+            _processPool = _world.GetPool<Process>();
             _shiftPool = _world.GetPool<ShiftProcess>();
             _transformPool = _world.GetPool<MonoLink<Transform>>();
             _worldPosPool = _world.GetPool<WorldPosition>();
@@ -34,34 +38,35 @@ namespace Scripts
 
         public void Run(IEcsSystems systems)
         {
-            foreach (var e in _shiftFilter)
+            foreach (var e in _eventListener.OnAdd)
             {
-                Started<ShiftProcess> processLink = _startedPool.Get(e);
-                ShiftProcess shifting = processLink.GetProcessData(_shiftPool);
-                Transform transform = _transformPool.Get(e).Value;
+                Process process = _processPool.Get(e);
+                ShiftProcess shifting = _shiftPool.Get(e);
+                Transform transform = _transformPool.Get(process.Target.Id).Value;
 
                 if (shifting.Target.Unpack(_world, out var target))
                 {
                     var targetPos = _worldPosPool.Get(target).Value;
                     var direction = (targetPos - new Vector3(transform.position.x, 0, transform.position.z)).normalized;
                     //TODO: move to settings
-                    targetPos = new Vector3(targetPos.x, shifting.Height * 0.3f, targetPos.z);
+                    targetPos = new Vector3(targetPos.x, shifting.Height * (_viewSettings.HexSpacing + _viewSettings.HexHeight), targetPos.z);
 
                     transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
                     var sequence = DOTween.Sequence();
                     sequence
                         //TODO: move to settings
-                        .Append(transform.DOJump(targetPos, 1, 1, 0.15f))
-                        .Join(transform.DORotate(new Vector3(180, transform.rotation.eulerAngles.y, 0), 0.15f,
+                        .Append(transform.DOJump(targetPos, 1, 1, _viewSettings.ShiftDuration))
+                        .Join(transform.DORotate(new Vector3(180, transform.rotation.eulerAngles.y, 0), _viewSettings.ShiftDuration,
                             RotateMode.FastBeyond360))
                         .AppendCallback(() =>
                         {
                             transform.rotation = Quaternion.identity;
                         });
                 
-                    _gameFlowService.SetDurationToProcess(processLink.ProcessEntity, sequence.Duration());
+                    _gameFlowService.SetDurationToProcess(e, sequence.Duration());
                 }
             }
+            _eventListener.OnAdd.Clear();
         }
     }
 }

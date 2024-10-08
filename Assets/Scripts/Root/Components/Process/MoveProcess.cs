@@ -1,10 +1,10 @@
-using Leopotam.EcsLite;
+using UnityEngine;
 
 namespace Scripts
 {
     public struct MoveProcess : IProcessData
     {
-        public EcsPackedEntity Target;
-        public float Delay;
+        public Vector3 Offset;
+        public float Speed;
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Leopotam.EcsLite;
-using UnityEngine;
 
 namespace Scripts
 {
-    public class CheckCollapseStateSystem : IEcsInitSystem, IEcsRunSystem
+    public class CheckCollapseStateSystem : IEcsInitSystem , IEcsRunSystem
     {
         private readonly HexService _hexService;
         private readonly GameFlowService _gameFlowService;
@@ -36,11 +35,12 @@ namespace Scripts
 
         public void Run(IEcsSystems systems)
         {
+            if(_gameFlowService.IsAnyoneActing) return;
+            
             foreach (var e in _cellFilter)
             {
-                if(_gameFlowService.IsAnyoneActing) return;
-                
                 var count = _hexService.GetTopHexColorCount(e);
+                //TODO: move to settings
                 if (count >= 10)
                 {
                     foreach (var h in _hexFilter)

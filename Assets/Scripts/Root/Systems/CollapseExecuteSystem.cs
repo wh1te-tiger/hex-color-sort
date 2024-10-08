@@ -37,9 +37,11 @@ namespace Scripts
                 ref var targetChanged = ref _targetChangedPool.Send();
                 targetChanged.Old = hex.Target;
                 hex.Target = default;
+
+                var collapse = _collapsePool.Get(e);
                 
-                ref var process = ref _gameFlowService.StartNewProcess(_processPool, e);
-                process.Target = _world.PackEntity(e);
+                ref var process = ref _gameFlowService.StartNewProcess(_processPool, e, collapse.Delay * 0.05f);
+                process.PlayParticles = hex.Index == 0;
                 
                 _collapsePool.Del(e);
             }

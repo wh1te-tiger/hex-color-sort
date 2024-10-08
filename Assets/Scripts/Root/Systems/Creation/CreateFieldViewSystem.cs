@@ -33,7 +33,7 @@ namespace Creation
                 var cell = _cellsPool.Get(e);
                 var coordinates = cell.FieldPosition;
                 
-                var x = _viewSettings.HexSize * 3 / 2f * coordinates.q;
+                var x = _viewSettings.CellWidth * 3 / 2f * coordinates.q;
                 var z = Mathf.Sqrt(3) / 2 * coordinates.q + Mathf.Sqrt(3) * coordinates.r;
                 
                 ref var pos = ref world.GetPool<WorldPosition>().Add(e);

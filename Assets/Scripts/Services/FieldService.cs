@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Scripts
 {
@@ -38,6 +39,36 @@ namespace Scripts
             
             neighbors = _directions.Select(d => pos + d).Where(IsCellExists).ToArray();
             return true;
+        }
+        
+        //  ⎡q⎤     ⎡   2/3         0    ⎤   ⎡x⎤
+        //  ⎢ ⎥  =  ⎢                    ⎥ × ⎢ ⎥ ÷ size
+        //  ⎣r⎦     ⎣  -1/3    sqrt(3)/3 ⎦   ⎣y⎦
+        
+        public static Coordinates GetHexCoordinates(Vector3 pos, float cellWidth)
+        {
+            var q = (2f / 3 * pos.x) / cellWidth;
+            var r = (-1f / 3 * pos.x + Mathf.Sqrt(3) / 3 * pos.z) / cellWidth;
+            return RoundCoordinates(new Fractional(q, r));
+        }
+        
+        private static Coordinates RoundCoordinates(Fractional frac)
+        {
+            var q = Mathf.RoundToInt(frac.q);
+            var r = Mathf.RoundToInt(frac.r);
+            var s = Mathf.RoundToInt(frac.s);
+
+            var qDiff = Mathf.Abs(q - frac.q);
+            var rDiff = Mathf.Abs(r - frac.r);
+            var sDiff = Mathf.Abs(s - frac.s);
+
+            if (qDiff > rDiff && qDiff > sDiff)  
+                q = -r - s;
+            else if (rDiff > sDiff) 
+                r = -q - s;
+            else 
+                s = -q - r;
+            return new Coordinates(q, r, s);
         }
     }
 }
