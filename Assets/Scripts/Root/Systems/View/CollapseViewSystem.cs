@@ -1,13 +1,18 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using Leopotam.EcsLite;
+using UniRx;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Scripts
 {
-    public class CollapseViewSystem : IEcsInitSystem, IEcsRunSystem
+    public class CollapseViewSystem : IEcsInitSystem, IEcsRunSystem, IDisposable
     {
         private readonly GameFlowService _gameFlowService;
         private readonly ViewSettings _viewSettings;
+        private readonly IFactory<EntityProvider> _hexFactory;
+        private readonly IFactory<VfxProvider> _vfxFactory;
 
         private EcsWorld _world;
         
@@ -18,10 +23,15 @@ namespace Scripts
         private EcsPool<CollapseProcess> _collapsePool;
         private EcsPool<MonoLink<Transform>> _transformPool;
 
-        public CollapseViewSystem(GameFlowService gameFlowService, ViewSettings viewSettings)
+        private readonly CompositeDisposable _disposables = new();
+
+        public CollapseViewSystem(GameFlowService gameFlowService, ViewSettings viewSettings,
+            IFactory<EntityProvider> hexFactory, IFactory<VfxProvider> vfxFactory)
         {
             _gameFlowService = gameFlowService;
             _viewSettings = viewSettings;
+            _hexFactory = hexFactory;
+            _vfxFactory = vfxFactory;
         }
 
         public void Init(IEcsSystems systems)
@@ -42,25 +52,29 @@ namespace Scripts
                 CollapseProcess collapsing = _collapsePool.Get(e);
                 Transform transform = _transformPool.Get(process.Target.Id).Value;
 
-                if (collapsing.PlayParticles)
+                if (collapsing.PlayVfx)
                 {
-                    var collapse = Object.Instantiate(_viewSettings.CollapseEffect);
-                    collapse.transform.position = transform.position;
-                    collapse.Play();
+                    var vfx = _vfxFactory.Create();
+                    vfx.transform.position = transform.position;
+                    vfx.Play();
+                    vfx.Subscribe(() => _vfxFactory.Release(vfx));
                 }
                 
                 transform
                     .DOScale(Vector3.zero, _viewSettings.CollapseDuration)
-                    //.SetEase(Ease.OutBounce)
                     .onComplete += () =>
                 {
-                    transform.localScale = Vector3.one;
-                    transform.gameObject.SetActive(false);
+                    _hexFactory.Release(transform.gameObject.GetComponent<EntityProvider>());
                 }; 
 
                 _gameFlowService.SetDurationToProcess(e, _viewSettings.CollapseDuration);
             }
             _eventListener.OnAdd.Clear();
+        }
+
+        public void Dispose()
+        {
+            _disposables.Dispose();
         }
     }
 }

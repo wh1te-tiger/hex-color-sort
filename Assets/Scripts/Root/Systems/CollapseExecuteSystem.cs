@@ -41,7 +41,7 @@ namespace Scripts
                 var collapse = _collapsePool.Get(e);
                 
                 ref var process = ref _gameFlowService.StartNewProcess(_processPool, e, collapse.Delay * 0.05f);
-                process.PlayParticles = hex.Index == 0;
+                process.PlayVfx = hex.Index == 0;
                 
                 _collapsePool.Del(e);
             }

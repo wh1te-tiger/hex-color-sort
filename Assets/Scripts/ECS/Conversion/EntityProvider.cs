@@ -6,7 +6,7 @@ namespace Scripts
     [DisallowMultipleComponent]
     public class EntityProvider : MonoBehaviour
     {
-        [field: SerializeField] public int ID { get;  private set; }
+        [field: SerializeField] private int ID { get; set; }
 
         #region State
 
@@ -30,9 +30,9 @@ namespace Scripts
             return true;
         }
 
-        public bool Inject(EcsWorld world)
+        public void Inject(EcsWorld world)
         {
-            if(_isInitialized) return false;
+            if(_isInitialized) return;
             
             _world = world;
             var e = _world.NewEntity();
@@ -42,7 +42,6 @@ namespace Scripts
             ConvertComponents();
             
             _isInitialized = true;
-            return true;
         }
         
         public bool TryGetEntity(out int entity)

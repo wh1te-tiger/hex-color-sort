@@ -3,23 +3,40 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public class HexViewFactory : EntityViewFactory
+    public class HexViewFactory : FactoryWithPool<EntityProvider>
     {
         private readonly ViewSettings _viewSettings;
         private readonly Transform _root;
+        
+        private readonly EcsWorld _world;
 
-        public HexViewFactory(EcsWorld world, ViewSettings viewSettings, Transform root) : base(world)
+        public HexViewFactory(EcsWorld world, ViewSettings viewSettings, Transform root)
         {
+            _world = world;
             _viewSettings = viewSettings;
             _root = root;
         }
-
-        public override GameObject Create(int entity)
+        
+        protected override EntityProvider CreateFunction()
         {
-            var provider = CreateView(_viewSettings.HexPrefab, _root);
-            provider.Inject(World, entity);
-            
-            return provider.gameObject;
+            var obj = Object.Instantiate(_viewSettings.HexPrefab, _root);
+            var provider = obj.GetComponent<EntityProvider>();
+            provider.Inject(_world);
+            return provider;
+        }
+
+        protected override void OnReleaseFunction(EntityProvider element)
+        {
+            base.OnReleaseFunction(element);
+            element.gameObject.SetActive(false);
+            element.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            element.transform.localScale = Vector3.one;
+        }
+
+        protected override void OnGetFunction(EntityProvider element)
+        {
+            base.OnGetFunction(element);
+            element.gameObject.SetActive(true);
         }
     }
 }

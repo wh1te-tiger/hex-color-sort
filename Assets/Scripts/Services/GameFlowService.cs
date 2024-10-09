@@ -1,9 +1,9 @@
-﻿using Leopotam.EcsLite;
-using UnityEngine;
+﻿using System;
+using Leopotam.EcsLite;
 
 namespace Scripts
 {
-    public class GameFlowService
+    public class GameFlowService : IDisposable
     {
         public bool IsAnyoneActing => _acting.GetEntitiesCount() > 0;
         public bool IsHexCreationNeeded => _emptySlots.GetEntitiesCount() == 3;
@@ -18,7 +18,7 @@ namespace Scripts
         private readonly EcsFilter _emptySlots;
         private readonly EventListener _eventListener = new();
         private readonly EcsFilter _dragging;
-
+        
         public GameFlowService(EcsWorld w)
         {
             _acting = w.Filter<HasActiveProcess>().End();
@@ -26,14 +26,16 @@ namespace Scripts
             _dragging = w.Filter<Slot>().Inc<Selected>().End();
             var collapsedFilter = w.Filter<CollapseRequest>().End();
             collapsedFilter.AddEventListener(_eventListener);
-            _eventListener.OnAdded += () =>
-            {
-                Score++;
-            };
+            _eventListener.OnAdded += IncreaseScore;
             
             _processPool = w.GetPool<Process>();
             _activeProcessPool = w.GetPool<HasActiveProcess>();
             _delayPool = w.GetPool<Delay>();
+        }
+        
+        private void IncreaseScore()
+        {
+            Score++;
         }
 
         #region Process
@@ -43,7 +45,6 @@ namespace Scripts
             var world = pool.GetWorld();
             var processEntity = world.NewEntity();
             ref var process = ref _processPool.Add(processEntity);
-            process.Phase = StatePhase.OnStart;
             process.Target = world.PackEntity(entity);
             ref var activeProc = ref _activeProcessPool.GetOrAdd(entity);
             activeProc.Process.Add(processEntity);
@@ -56,7 +57,6 @@ namespace Scripts
             var world = pool.GetWorld();
             var processEntity = world.NewEntity();
             ref var process = ref _processPool.Add(processEntity);
-            process.Phase = StatePhase.OnStart;
             process.Target = world.PackEntity(entity);
             
             ref var activeProc = ref _activeProcessPool.GetOrAdd(entity);
@@ -84,6 +84,15 @@ namespace Scripts
         public void SetDurationToProcess(int processEntity, float duration)
         {
             _processPool.Get(processEntity).Duration = duration;
+        }
+
+        #endregion
+
+        #region Disposable
+
+        public void Dispose()
+        {
+            _eventListener.OnAdded -= IncreaseScore;
         }
 
         #endregion

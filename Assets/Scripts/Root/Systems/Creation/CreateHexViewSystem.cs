@@ -1,10 +1,10 @@
 ﻿using Leopotam.EcsLite;
+using UnityEngine;
 
 namespace Scripts
 {
     public class CreateHexViewSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly HexViewFactory _viewFactory;
         private readonly ColorSettings _colorSettings;
 
         private EcsFilter _modelCreatedFilter;
@@ -12,10 +12,10 @@ namespace Scripts
         private EcsPool<Hex> _hexPool;
         private EcsPool<WorldPosition> _worldPositionPool;
         private EcsPool<MonoLink<Colorable>> _colorablePool;
+        private EcsPool<MonoLink<Transform>> _transformPool;
 
-        public CreateHexViewSystem(HexViewFactory viewFactory, ColorSettings colorSettings)
+        public CreateHexViewSystem(ColorSettings colorSettings)
         {
-            _viewFactory = viewFactory;
             _colorSettings = colorSettings;
         }
 
@@ -26,6 +26,7 @@ namespace Scripts
             _modelCreatedPool = world.GetPool<ModelCreated>();
             _hexPool = world.GetPool<Hex>();
             _colorablePool = world.GetPool<MonoLink<Colorable>>();
+            _transformPool = world.GetPool<MonoLink<Transform>>();
             _worldPositionPool = world.GetPool<WorldPosition>();
         }
 
@@ -33,11 +34,11 @@ namespace Scripts
         {
             foreach (var e in _modelCreatedFilter)
             {
-                var go = _viewFactory.Create(e);
+                Transform transform = _transformPool.Get(e).Value;
                 
                 var hex = _hexPool.Get(e);
                 var pos = _worldPositionPool.Get(hex.Target.Id);
-                go.transform.position = pos.Value;
+                transform.position = pos.Value;
                 
                 ref var colorable = ref _colorablePool.Get(e);
                 colorable.Value.Color = _colorSettings.Get(hex.Color);

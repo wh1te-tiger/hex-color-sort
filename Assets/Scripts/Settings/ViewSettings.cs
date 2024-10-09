@@ -11,7 +11,7 @@ namespace Scripts
         [field: SerializeField] public Color BaseCellColor { get; private set; }
         [field: SerializeField] public Color MainMenuCellColor { get; private set; }
         [field: SerializeField] public Color HighlightedCellColor { get; private set; }
-        [field: SerializeField] public VisualEffect CollapseEffect { get; private set; }
+        [field: SerializeField] public VfxProvider CollapseEffect { get; private set; }
         
         [field: SerializeField] public float HexHorizontalSpeed { get; private set; }
         [field: SerializeField] public float HexVerticalSpeed { get; private set; }

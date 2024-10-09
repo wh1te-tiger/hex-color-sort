@@ -2,6 +2,6 @@ namespace Scripts
 {
     public struct CollapseProcess : IProcessData
     {
-        public bool PlayParticles;
+        public bool PlayVfx;
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Leopotam.EcsLite;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Scripts
 {
@@ -8,6 +10,7 @@ namespace Scripts
     {
         private readonly GameFlowService _gameFlowService;
         private readonly ColorSettings _colorSettings;
+        private readonly IFactory<EntityProvider> _factory;
 
         private EcsWorld _world;
         private EcsFilter _slotsFilter;
@@ -15,10 +18,11 @@ namespace Scripts
         private EcsPool<ModelCreated> _modelCreatedPool;
         private EcsPool<Unordered> _unorderedPool;
 
-        public CreateHexesSystem(GameFlowService gameFlowService, ColorSettings colorSettings)
+        public CreateHexesSystem(GameFlowService gameFlowService, ColorSettings colorSettings, IFactory<EntityProvider> factory)
         {
             _gameFlowService = gameFlowService;
             _colorSettings = colorSettings;
+            _factory = factory;
         }
 
         public void Init(IEcsSystems systems)
@@ -62,8 +66,9 @@ namespace Scripts
             {
                 for (var i = 0; i < record.Count; i++)
                 {
-                    var e = _world.NewEntity();
-                    ref var hex = ref _hexesPool.Add(e);
+                    var provider = _factory.Create();
+                    if (!provider.TryGetEntity(out var e)) throw new Exception("Provider without entity");
+                    ref var hex = ref _hexesPool.GetOrAdd(e);
                     hex.Color = record.ColorName;
                     hex.Target = _world.PackEntity(parent);
                     hex.Index = index;

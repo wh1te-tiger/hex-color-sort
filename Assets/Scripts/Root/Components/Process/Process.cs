@@ -9,17 +9,9 @@ namespace Scripts
     
     public struct Process
     {
-        public StatePhase Phase;
         public float Duration;
         public bool Paused;
         public EcsPackedEntity Target;
-    }
-    
-    public enum StatePhase
-    {
-        OnStart,
-        Process,
-        Complete
     }
     
     public struct HasActiveProcess : IEcsAutoReset<HasActiveProcess>

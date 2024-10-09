@@ -10,6 +10,8 @@ namespace Scripts
         [SerializeField] private ViewSettings viewSettings;
         [SerializeField] private ColorSettings colorSettings;
         [SerializeField] private Transform fieldRoot;
+        [SerializeField] private Transform hexRoot;
+        [SerializeField] private Transform vfxRoot;
         [SerializeField] private Transform slots;
         
         private EcsWorld _world;
@@ -32,7 +34,8 @@ namespace Scripts
             var hexService = new HexService(_world);
             var gameFlowService = new GameFlowService(_world);
             var fieldFactory = new FieldFactory(_world, fieldService, fieldSettings);
-            var hexFactory = new HexViewFactory(_world, viewSettings, null);
+            var hexFactory = new HexViewFactory(_world, viewSettings, hexRoot);
+            var vfxFactory = new VfxFactory(viewSettings, vfxRoot);
             
 #if UNITY_EDITOR
                 // Регистрируем отладочные системы по контролю за состоянием каждого отдельного мира:
@@ -50,7 +53,7 @@ namespace Scripts
             
             _systems.Add(new CreateFieldSystem(fieldFactory));
             _systems.Add(new CreateInitialHexesSystem(fieldService, fieldSettings));
-            _systems.Add(new CreateHexesSystem(gameFlowService, colorSettings));
+            _systems.Add(new CreateHexesSystem(gameFlowService, colorSettings, hexFactory));
             _systems.Add(new CreateFieldViewSystem(viewSettings, fieldRoot));
             
             _systems.Add(new CheckDragOverCellSystem(gameFlowService, dragService, fieldService));
@@ -68,10 +71,10 @@ namespace Scripts
             _systems.Add(new CollapseExecuteSystem(gameFlowService));
 
             _systems.Add(new HighlightSystem(viewSettings));
-            _systems.Add(new CreateHexViewSystem(hexFactory, colorSettings));
+            _systems.Add(new CreateHexViewSystem(colorSettings));
             _systems.Add(new ShiftViewSystem(gameFlowService, viewSettings));
             _systems.Add(new MoveViewSystem(gameFlowService));
-            _systems.Add(new CollapseViewSystem(gameFlowService, viewSettings));
+            _systems.Add(new CollapseViewSystem(gameFlowService, viewSettings, hexFactory, vfxFactory));
             _systems.Add(new HexOrderViewSystem(viewSettings));
             _systems.Add(new HighlightSystem(viewSettings));
             
