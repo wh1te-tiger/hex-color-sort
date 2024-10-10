@@ -1,14 +1,12 @@
-﻿using System;
-using Leopotam.EcsLite;
+﻿using Leopotam.EcsLite;
 
 namespace Scripts
 {
-    public class GameFlowService : IDisposable
+    public class GameFlowService
     {
         public bool IsAnyoneActing => _acting.GetEntitiesCount() > 0;
         public bool IsHexCreationNeeded => _emptySlots.GetEntitiesCount() == 3;
         public bool IsDragging => _dragging.GetEntitiesCount() == 1;
-        public int Score { get; private set; }
         
         private readonly EcsPool<HasActiveProcess> _activeProcessPool;
         private readonly EcsPool<Process> _processPool;
@@ -16,7 +14,6 @@ namespace Scripts
         
         private readonly EcsFilter _acting;
         private readonly EcsFilter _emptySlots;
-        private readonly EventListener _eventListener = new();
         private readonly EcsFilter _dragging;
         
         public GameFlowService(EcsWorld w)
@@ -24,18 +21,10 @@ namespace Scripts
             _acting = w.Filter<HasActiveProcess>().End();
             _emptySlots = w.Filter<Slot>().Inc<Empty>().End();
             _dragging = w.Filter<Slot>().Inc<Selected>().End();
-            var collapsedFilter = w.Filter<CollapseRequest>().End();
-            collapsedFilter.AddEventListener(_eventListener);
-            _eventListener.OnAdded += IncreaseScore;
             
             _processPool = w.GetPool<Process>();
             _activeProcessPool = w.GetPool<HasActiveProcess>();
             _delayPool = w.GetPool<Delay>();
-        }
-        
-        private void IncreaseScore()
-        {
-            Score++;
         }
 
         #region Process
@@ -84,15 +73,6 @@ namespace Scripts
         public void SetDurationToProcess(int processEntity, float duration)
         {
             _processPool.Get(processEntity).Duration = duration;
-        }
-
-        #endregion
-
-        #region Disposable
-
-        public void Dispose()
-        {
-            _eventListener.OnAdded -= IncreaseScore;
         }
 
         #endregion

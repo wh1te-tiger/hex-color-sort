@@ -5,36 +5,40 @@ namespace Scripts
 {
     public class HexService
     {
-        private EcsFilter Filter { get; }
+        #region State
 
-        private EcsPool<Hex> Pool { get; }
+        private readonly EcsFilter _filter;
+        private readonly EcsPool<Hex> _pool;
+        private int HexTotalCount => _filter.GetEntitiesCount();
 
-        private int HexTotalCount => Filter.GetEntitiesCount();
+        #endregion
 
         public HexService(EcsWorld world)
         {
-            Filter = world.Filter<Hex>().End();
-            Pool = world.GetPool<Hex>();
+            _filter = world.Filter<Hex>().End();
+            _pool = world.GetPool<Hex>();
         }
         
+        //TODO: store top hex color data in cell component   
         public ColorId GetTopHexColor(int cell)
         {
-            var hexesOnCell = Filter
+            var hexesOnCell = _filter
                 .GetRawEntities()
                 .Take(HexTotalCount)
-                .Select(e => Pool.Get(e))
+                .Select(e => _pool.Get(e))
                 .Where(hex => hex.Target.Id.Equals(cell))
                 .ToArray();
             
             return hexesOnCell.Length != 0 ? hexesOnCell.Single(h => h.Index == hexesOnCell.Length - 1).Color : ColorId.None;
         }
 
+        //TODO: nu hz
         public int GetTopHexColorCount(int cell)
         {
-            var hexesOnCell = Filter
+            var hexesOnCell = _filter
                 .GetRawEntities()
                 .Take(HexTotalCount)
-                .Select(e => Pool.Get(e))
+                .Select(e => _pool.Get(e))
                 .Where(hex => hex.Target.Id.Equals(cell))
                 .OrderByDescending(h=> h.Index)
                 .ToArray();
