@@ -5,7 +5,7 @@ namespace Scripts
 {
     public class HexOrderViewSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly CoreViewSettings _coreViewSettings;
+        private readonly ViewSettings _viewSettings;
         
         private EcsWorld _world;
         private EcsFilter _unorderedFilter;
@@ -14,9 +14,9 @@ namespace Scripts
         private EcsPool<MonoLink<Transform>> _transformPool;
         private EcsPool<HeightOffset> _heightOffsetPool;
 
-        public HexOrderViewSystem(CoreViewSettings coreViewSettings)
+        public HexOrderViewSystem(ViewSettings viewSettings)
         {
-            _coreViewSettings = coreViewSettings;
+            _viewSettings = viewSettings;
         }
 
         public void Init(IEcsSystems systems)
@@ -44,7 +44,7 @@ namespace Scripts
                 }
                 
                 var transform = _transformPool.Get(e).Value;
-                transform.position += Vector3.up * (hex.Index * (_coreViewSettings.HexHeight + _coreViewSettings.HexSpacing) + offset);
+                transform.position += Vector3.up * (hex.Index * (_viewSettings.HexHeight + _viewSettings.HexSpacing) + offset);
                 _unorderedPool.Del(e);
             }
         }

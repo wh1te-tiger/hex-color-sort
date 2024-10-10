@@ -1,14 +1,17 @@
-﻿using Leopotam.EcsLite;
+﻿using System;
+using Leopotam.EcsLite;
 
 namespace Scripts
 {
     public class CreateInitialHexesSystem : IEcsInitSystem
     {
+        private readonly HexFactory _factory;
         private readonly FieldSettings _fieldSettings;
         private readonly FieldService _fieldService;
 
-        public CreateInitialHexesSystem(FieldService fieldService, FieldSettings fieldSettings)
+        public CreateInitialHexesSystem(FieldService fieldService, FieldSettings fieldSettings, HexFactory factory)
         {
+            _factory = factory;
             _fieldSettings = fieldSettings;
             _fieldService = fieldService;
         }
@@ -29,9 +32,10 @@ namespace Scripts
                 {
                     for (var i = 0; i < hexData.count; i++)
                     {
-                        var e = world.NewEntity();
+                        var provider = _factory.Create();
+                        if (!provider.TryGetEntity(out var e)) throw new Exception("Provider without entity");
 
-                        ref var hex = ref hexPool.Add(e);
+                        ref var hex = ref hexPool.GetOrAdd(e);
                         hex.Color = hexData.colorId;
                         hex.Target = world.PackEntity(cellEntity);
                         hex.Index = index;

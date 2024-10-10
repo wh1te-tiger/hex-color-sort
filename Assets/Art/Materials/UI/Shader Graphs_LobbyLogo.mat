@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_MainTextureShader
+  m_Name: Shader Graphs_LobbyLogo
   m_Shader: {fileID: -6465566751694194690, guid: 7b85dd786a5ab184e81f37bd4b1c8a92,
     type: 3}
   m_Parent: {fileID: 0}

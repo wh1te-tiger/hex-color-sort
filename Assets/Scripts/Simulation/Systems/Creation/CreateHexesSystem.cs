@@ -10,7 +10,7 @@ namespace Scripts
     {
         private readonly GameFlowService _gameFlowService;
         private readonly ColorSettings _colorSettings;
-        private readonly HexViewFactory _factory;
+        private readonly HexFactory _factory;
 
         private EcsWorld _world;
         private EcsFilter _slotsFilter;
@@ -18,7 +18,7 @@ namespace Scripts
         private EcsPool<ModelCreated> _modelCreatedPool;
         private EcsPool<Unordered> _unorderedPool;
 
-        public CreateHexesSystem(GameFlowService gameFlowService, ColorSettings colorSettings, HexViewFactory factory)
+        public CreateHexesSystem(GameFlowService gameFlowService, ColorSettings colorSettings, HexFactory factory)
         {
             _gameFlowService = gameFlowService;
             _colorSettings = colorSettings;

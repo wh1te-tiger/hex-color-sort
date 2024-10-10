@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9de2db89ca31432a9049ae3bdb779cb6, type: 3}
-  m_Name: CoreWindows
+  m_Script: {fileID: 11500000, guid: f2801d2ef98247869d89e78cd25c4208, type: 3}
+  m_Name: Lobby Windows
   m_EditorClassIdentifier: 
-  <CoreWindow>k__BackingField: {fileID: 4235100403719193302, guid: da514d712d570d54db918bedf8771395,
+  <LobbyWindow>k__BackingField: {fileID: -9004701141653046499, guid: 8d3e4e9fd8de38c44a40e29ee1292f94,
     type: 3}
-  <WinWindow>k__BackingField: {fileID: 0}
-  <FailWindow>k__BackingField: {fileID: 0}

@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public class HexViewFactory : FactoryWithPool<EntityProvider>
+    public class HexFactory : FactoryWithPool<EntityProvider>
     {
         private readonly ViewSettings _viewSettings;
         private readonly Transform _root;
         
         private readonly EcsWorld _world;
 
-        public HexViewFactory(EcsWorld world, ViewSettings viewSettings, Transform root)
+        public HexFactory(EcsWorld world, ViewSettings viewSettings, Transform root)
         {
             _world = world;
             _viewSettings = viewSettings;

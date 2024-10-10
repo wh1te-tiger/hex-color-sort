@@ -4,15 +4,15 @@ using Zenject;
 
 namespace Scripts
 {
-    public class CoreInstaller : MonoInstaller
+    public class LobbyInstaller : MonoInstaller
     {
-        [SerializeField] private CoreSettings settings;
-        [SerializeField] private LevelSettings levelSettings;
+        [SerializeField] private LobbySettings settings;
+        [SerializeField] private FieldSettings fieldSettings;
         [SerializeField] private LevelSceneData sceneData;
         
         private readonly InstallSettings _installInfo = new();
         private EcsWorld _world;
-        
+
         public override void InstallBindings()
         {
             _installInfo.Container = () => Container;
@@ -26,16 +26,15 @@ namespace Scripts
             
             InstallMessagesTransporting();
         }
-        
+
         private void InstallSettings()
         {
-            Container.BindInstance(settings.CoreViewSettings). AsSingle();
-            Container.BindInstance(settings.CoreViewSettings.ColorSettings).AsSingle();
-
-            Container.BindInstance(levelSettings).AsSingle();
-            Container.BindInstance(levelSettings.Field).AsSingle();
+            Container.Bind<ViewSettings>().To<LobbyViewSettings>().FromInstance(settings.ViewSettings).AsSingle();
+            Container.BindInstance(settings.ViewSettings.ColorSettings).AsSingle();
+            
+            Container.BindInstance(fieldSettings).AsSingle();
         }
-        
+
         private void InstallWorld()
         {
             _world = new EcsWorld();
@@ -45,61 +44,37 @@ namespace Scripts
         private void InstallFactories()
         {
             Container.Bind<FieldFactory>().AsSingle();
-            Container.Bind<HexFactory>().AsSingle().WithArguments(settings.CoreViewSettings, sceneData.HexRoot);
-            Container.Bind<VfxFactory>().AsSingle().WithArguments(sceneData.VFXRoot);
+            Container.Bind<HexFactory>().AsSingle().WithArguments(sceneData.HexRoot);
         }
-
+        
         private void InstallServices()
         {
             Container.Bind<FieldService>().AsSingle();
-            Container.Bind<DragService>().AsSingle();
             Container.Bind<HexService>().AsSingle();
             Container.Bind<GameFlowService>().AsSingle();
-            Container.Bind<LevelService>().AsSingle();
         }
         
         private void InstallSystems()
         {
-            //Input
-            Add<InputSystem>();
-            Add<HandleDragStartedSystem>();
-            Add<HandleDragSystem>();
-            Add<HandleDragEndedSystem>();
-            
             //Creation
             Add<CreateFieldSystem>();
             Add<CreateInitialHexesSystem>();
-            Add<CreateHexesSystem>();
-            Add<CreateFieldViewSystem>(settings.CoreViewSettings, sceneData.FieldRoot);
-            Add<CreateSlotsSystem>(sceneData.Slots);
-            Add<CreateUiSystem>();
+            Add<CreateFieldViewSystem>(sceneData.FieldRoot);
+            Add<CreateLobbyUiSystem>();
             
             //Simulation
-            Add<CheckDragOverCellSystem>();
-            Add<MarkDraggingSystem>();
-            Add<UnmarkDraggingSystem>();
+            Add<PickRandomCellSystem>();
             Add<TargetChangedEventSystem>();
             Add<DelaySystem>();
-            Add<ReturnExecuteSystem>();
-            Add<RiseExecuteSystem>();
-            Add<DropExecuteSystem>();
-            Add<PickCellSystem>();
             Add<ShiftExecuteSystem>();
-            Add<CheckCollapseStateSystem>();
-            Add<CollapseExecuteSystem>();
             
             //View
-            Add<HighlightSystem>();
             Add<CreateHexViewSystem>();
-            Add<ShiftViewSystem>(settings.CoreViewSettings);
-            Add<MoveViewSystem>();
-            Add<CollapseViewSystem>();
+            Add<ShiftViewSystem>();
             Add<HexOrderViewSystem>();
             
             //Process
             Add<ProcessSystem<ShiftProcess>>();
-            Add<ProcessSystem<MoveProcess>>();
-            Add<ProcessSystem<CollapseProcess>>();
             
 #if UNITY_EDITOR
             Add<Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem>();
@@ -109,10 +84,10 @@ namespace Scripts
         
         private void InstallUi()
         {
-            Container.BindInstance(settings.CoreUiSettings).AsSingle();
+            Container.BindInstance(settings.UiSettings).AsSingle();
             Container.Bind(typeof(Canvas), typeof(UiService))
                 .FromSubContainerResolve()
-                .ByInstaller<CoreUiInstaller>()
+                .ByInstaller<LobbyUiInstaller>()
                 .WithKernel()
                 .AsSingle();
         }

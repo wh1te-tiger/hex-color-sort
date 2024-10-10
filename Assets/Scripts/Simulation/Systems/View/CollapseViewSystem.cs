@@ -11,7 +11,7 @@ namespace Scripts
     {
         private readonly GameFlowService _gameFlowService;
         private readonly CoreViewSettings _coreViewSettings;
-        private readonly HexViewFactory _hexFactory;
+        private readonly HexFactory _hexFactory;
         private readonly VfxFactory _vfxFactory;
 
         private EcsWorld _world;
@@ -26,7 +26,7 @@ namespace Scripts
         private readonly CompositeDisposable _disposables = new();
 
         public CollapseViewSystem(GameFlowService gameFlowService, CoreViewSettings coreViewSettings,
-            HexViewFactory hexFactory, VfxFactory vfxFactory)
+            HexFactory hexFactory, VfxFactory vfxFactory)
         {
             _gameFlowService = gameFlowService;
             _coreViewSettings = coreViewSettings;
