@@ -9,6 +9,7 @@ namespace Scripts
         [SerializeField] private CoreSettings settings;
         [SerializeField] private LevelSettings levelSettings;
         [SerializeField] private LevelSceneData sceneData;
+        [Inject] private AppSessionData _appData;
         
         private readonly InstallSettings _installInfo = new();
         private EcsWorld _world;
@@ -29,7 +30,8 @@ namespace Scripts
         
         private void InstallSettings()
         {
-            Container.BindInstance(settings.CoreViewSettings). AsSingle();
+            Container.Bind<ViewSettings>().FromInstance(settings.CoreViewSettings).AsSingle();
+            Container.BindInstance(settings.CoreViewSettings).AsSingle();
             Container.BindInstance(settings.CoreViewSettings.ColorSettings).AsSingle();
 
             Container.BindInstance(levelSettings).AsSingle();
@@ -68,9 +70,9 @@ namespace Scripts
             
             //Creation
             Add<CreateFieldSystem>();
-            Add<CreateInitialHexesSystem>();
+            Add<CreateInitialHexesSystem>(_appData.SavedCoreSession);
             Add<CreateHexesSystem>();
-            Add<CreateFieldViewSystem>(settings.CoreViewSettings, sceneData.FieldRoot);
+            Add<CreateFieldViewSystem>(sceneData.FieldRoot);
             Add<CreateSlotsSystem>(sceneData.Slots);
             Add<CreateUiSystem>();
             

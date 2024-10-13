@@ -7,7 +7,7 @@ namespace Scripts
     {
         public Coordinates coordinates;
         public bool isLocked;
-        public HexData[] hexes;
+        public Hexes[] hexes;
     }
     
     

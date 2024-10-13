@@ -9,16 +9,20 @@ namespace Scripts
     {
         [SerializeField] private Button playButton;
         [SerializeField] private TMP_Text levelText;
+        
+        [Inject] private AppSessionData _appData;
+        [Inject] private Signal _startSessionRequest;
 
 
         public void Initialize()
         {
             playButton.onClick.AddListener(OnPlayButtonClicked);
+            levelText.text = _appData.NextLevelID.ToString();
         }
 
         private void OnPlayButtonClicked()
         {
-            Debug.Log("clicked");
+            _startSessionRequest?.Invoke();
         }
     }
 }

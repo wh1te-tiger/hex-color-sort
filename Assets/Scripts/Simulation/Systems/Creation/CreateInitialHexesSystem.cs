@@ -6,13 +6,13 @@ namespace Scripts
     public class CreateInitialHexesSystem : IEcsInitSystem
     {
         private readonly HexFactory _factory;
-        private readonly FieldSettings _fieldSettings;
         private readonly FieldService _fieldService;
+        private readonly CoreSessionData _coreData;
 
-        public CreateInitialHexesSystem(FieldService fieldService, FieldSettings fieldSettings, HexFactory factory)
+        public CreateInitialHexesSystem(FieldService fieldService, HexFactory factory, CoreSessionData coreData)
         {
             _factory = factory;
-            _fieldSettings = fieldSettings;
+            _coreData = coreData;
             _fieldService = fieldService;
         }
 
@@ -22,34 +22,26 @@ namespace Scripts
             var hexPool = world.GetPool<Hex>();
             var unorderedPool = world.GetPool<Unordered>();
             var modelCreated = world.GetPool<ModelCreated>();
-            
-            foreach (var cellData in _fieldSettings.cells)
-            {
-                var cellEntity = _fieldService.GetCellEntity(cellData.coordinates);
-                
-                var index = 0;
-                foreach (var hexData in cellData.hexes)
-                {
-                    for (var i = 0; i < hexData.count; i++)
-                    {
-                        var provider = _factory.Create();
-                        if (!provider.TryGetEntity(out var e)) throw new Exception("Provider without entity");
 
-                        ref var hex = ref hexPool.GetOrAdd(e);
-                        hex.Color = hexData.colorId;
-                        hex.Target = world.PackEntity(cellEntity);
-                        hex.Index = index;
+            foreach (var hexData in _coreData.CoreData.hexes)
+            {
+                var cellEntity = _fieldService.GetCellEntity(hexData.pos);
+                if(cellEntity == -1) throw new Exception($"Cell entity for {hexData.pos} is not created");
+                
+                var provider = _factory.Create();
+                if (!provider.TryGetEntity(out var e)) throw new Exception("Provider without entity");
+
+                ref var hex = ref hexPool.GetOrAdd(e);
+                hex.Color = hexData.color;
+                hex.Target = world.PackEntity(cellEntity);
+                hex.Index = hexData.index;
                         
-                        modelCreated.Add(e);
+                modelCreated.Add(e);
                         
-                        unorderedPool.Add(e);
+                unorderedPool.Add(e);
                         
-                        ref var targetChanged = ref world.Send<TargetChanged>();
-                        targetChanged.New = hex.Target;
-                        
-                        index++;
-                    }
-                }
+                ref var targetChanged = ref world.Send<TargetChanged>();
+                targetChanged.New = hex.Target;
             }
         }
     }

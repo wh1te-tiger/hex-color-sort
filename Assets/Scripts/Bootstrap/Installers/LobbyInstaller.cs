@@ -12,6 +12,7 @@ namespace Scripts
         
         private readonly InstallSettings _installInfo = new();
         private EcsWorld _world;
+        private readonly Signal _startSessionRequest = new();
 
         public override void InstallBindings()
         {
@@ -26,13 +27,11 @@ namespace Scripts
             
             InstallMessagesTransporting();
         }
-
+        
         private void InstallSettings()
         {
             Container.Bind<ViewSettings>().To<LobbyViewSettings>().FromInstance(settings.ViewSettings).AsSingle();
             Container.BindInstance(settings.ViewSettings.ColorSettings).AsSingle();
-            
-            Container.BindInstance(fieldSettings).AsSingle();
         }
 
         private void InstallWorld()
@@ -43,12 +42,13 @@ namespace Scripts
         
         private void InstallFactories()
         {
-            Container.Bind<FieldFactory>().AsSingle();
+            Container.Bind<FieldFactory>().AsSingle().WithArguments(fieldSettings);
             Container.Bind<HexFactory>().AsSingle().WithArguments(sceneData.HexRoot);
         }
         
         private void InstallServices()
         {
+            Container.BindInterfacesTo<StartupHandler>().AsSingle().WithArguments(_startSessionRequest);
             Container.Bind<FieldService>().AsSingle();
             Container.Bind<HexService>().AsSingle();
             Container.Bind<GameFlowService>().AsSingle();
@@ -58,7 +58,7 @@ namespace Scripts
         {
             //Creation
             Add<CreateFieldSystem>();
-            Add<CreateInitialHexesSystem>();
+            Add<CreateLobbyHexes>(fieldSettings);
             Add<CreateFieldViewSystem>(sceneData.FieldRoot);
             Add<CreateLobbyUiSystem>();
             
@@ -75,15 +75,11 @@ namespace Scripts
             
             //Process
             Add<ProcessSystem<ShiftProcess>>();
-            
-#if UNITY_EDITOR
-            Add<Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem>();
-            Add<Leopotam.EcsLite.UnityEditor.EcsSystemsDebugSystem>();
-#endif
         }
         
         private void InstallUi()
         {
+            Container.BindInstance(_startSessionRequest).AsSingle().WhenInjectedInto<LobbyUiInstaller>();
             Container.BindInstance(settings.UiSettings).AsSingle();
             Container.Bind(typeof(Canvas), typeof(UiService))
                 .FromSubContainerResolve()

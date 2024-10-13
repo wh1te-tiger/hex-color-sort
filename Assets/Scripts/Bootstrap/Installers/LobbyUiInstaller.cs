@@ -4,11 +4,13 @@ namespace Scripts
 {
     public class LobbyUiInstaller : UiInstaller
     {
-        private LobbyUiSettings _settings;
+        private readonly LobbyUiSettings _settings;
+        private readonly Signal _signal;
 
-        public LobbyUiInstaller(LobbyUiSettings settings)
+        public LobbyUiInstaller(LobbyUiSettings settings, Signal signal)
         {
             _settings = settings;
+            _signal = signal;
         }
 
         public override void InstallBindings()
@@ -23,7 +25,7 @@ namespace Scripts
         private void InstallWindows()
         {
             var windows = _settings.Windows;
-            InstallWindow(windows.LobbyWindow);
+            InstallWindow(windows.LobbyWindow, _signal);
         }
     }
 }

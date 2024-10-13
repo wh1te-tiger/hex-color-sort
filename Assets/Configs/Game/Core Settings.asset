@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CoreViewSettings>k__BackingField: {fileID: 11400000, guid: 6b49553d1d0dcc049842c857501188df,
     type: 2}
-  <UiSettings>k__BackingField: {fileID: 11400000, guid: c2e41210d73fad04db6173a438e8420a,
+  <CoreUiSettings>k__BackingField: {fileID: 11400000, guid: c2e41210d73fad04db6173a438e8420a,
     type: 2}

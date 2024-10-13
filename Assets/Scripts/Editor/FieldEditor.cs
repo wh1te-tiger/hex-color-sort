@@ -22,7 +22,7 @@ namespace Editor
                     var cellData = new CellData
                     {
                         coordinates = new Coordinates(cor.x, cor.y),
-                        hexes = Array.Empty<HexData>()
+                        hexes = Array.Empty<Hexes>()
                     };
                     _settings.cells[i] = cellData;
                 }
