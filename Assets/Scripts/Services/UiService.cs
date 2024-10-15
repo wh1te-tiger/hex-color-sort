@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 
 namespace Scripts
 {
-    public class UiService
+    public class UiService 
     {
         public bool IsInitialized { get; private set; }
+        public IObservable<WindowPresenter> WindowChanged;
 
         private readonly Canvas _canvas;
         private readonly List<WindowInstallInfo> _windowInstallInfos;
-        
+
         private readonly UiFactory _uiFactory;
         private WindowPresenter[] _windows;
         private WindowPresenter _currentWindow;
@@ -19,14 +22,15 @@ namespace Scripts
         {
             _uiFactory = uiFactory;
             _windowInstallInfos = windowInstallInfos;
+            WindowChanged = this.ObserveEveryValueChanged(_ => _currentWindow);
         }
-        
+
         public void Initialize<TWindow>() where TWindow : WindowPresenter
         {
             _windows = _windowInstallInfos
                 .Select(installInfo => _uiFactory.Create(installInfo.presenter.gameObject, installInfo.parameters))
                 .ToArray();
-            
+
             _currentWindow = GetWindow<TWindow>();
             _currentWindow.Enabled = true;
 
@@ -37,12 +41,13 @@ namespace Scripts
         {
             return _windows.First(w => w is TWindow) as TWindow;
         }
-        
-        public void DisplayWindow(WindowPresenter window, params object[] p)
+
+        public void DisplayWindow<TWindow>(params object[] p) where TWindow : WindowPresenter
         {
+            var window = GetWindow<TWindow>();
             DisplayWindowInternal(window, p);
         }
-
+        
         private void DisplayWindowInternal(WindowPresenter w, object[] p = null)
         {
             if (!IsInitialized)
@@ -50,7 +55,7 @@ namespace Scripts
                 Debug.LogError($"Unable to display {w}-window, UIService is not initialized");
                 return;
             }
-            
+
             if (w.WindowType == WindowTypes.Fullscreen)
             {
                 _currentWindow.Enabled = false;
@@ -59,38 +64,17 @@ namespace Scripts
             {
                 w.transform.SetAsLastSibling();
             }
-            
+
             _currentWindow = w;
             _currentWindow.Enabled = true;
         }
         
-        /*SafeAreaOffset GetSafeAreaOffset(Canvas canvas)
+        public void CloseCurrentWindow()
         {
-            var safeAreaRect = Screen.safeArea;
-            var scaleRatio = canvas.GetComponent<RectTransform>().rect.width / Screen.width;
-
-            var left = safeAreaRect.xMin * scaleRatio;
-            var right = (Screen.width - safeAreaRect.xMax) * scaleRatio;
-            var top = (Screen.height - safeAreaRect.yMax) * scaleRatio;
-            var bottom = safeAreaRect.yMin * scaleRatio;
-
-            return new SafeAreaOffset(left, right, top, bottom);
-        }*/
-    }
-    
-    public struct SafeAreaOffset
-    {
-        public float Left;
-        public float Right;
-        public float Top;
-        public float Bottom;
-
-        public SafeAreaOffset(float left, float right, float top, float bottom)
-        {
-            Left = left;
-            Right = right;
-            Top = top;
-            Bottom = bottom;
+            _currentWindow.Enabled = false;
+            var nextWindow = _windows.First(w => w.GetType() == _currentWindow.ParentWindow.GetType() );
+            
+            _currentWindow = nextWindow;
         }
     }
 }

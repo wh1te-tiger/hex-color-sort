@@ -18,7 +18,7 @@ namespace Scripts
         {
             var presenter = _container.InstantiatePrefabForComponent<WindowPresenter>(prefab, _root, parameters);
             presenter.Enabled = false;
-            if(presenter is IInitializable initialize) initialize.Initialize(); 
+            if (presenter is IInitializable initialize) initialize.Initialize(); 
             return presenter;
         }
     }

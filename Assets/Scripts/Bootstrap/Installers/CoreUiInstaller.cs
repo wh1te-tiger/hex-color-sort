@@ -5,10 +5,12 @@ namespace Scripts
     public class CoreUiInstaller : UiInstaller
     {
         private readonly CoreUiSettings _settings;
+        private readonly Signal _signal;
 
-        public CoreUiInstaller(CoreUiSettings settings)
+        public CoreUiInstaller(CoreUiSettings settings, Signal signal)
         {
             _settings = settings;
+            _signal = signal;
         }
 
         public override void InstallBindings()
@@ -23,9 +25,10 @@ namespace Scripts
         private void InstallWindows()
         {
             var windows = _settings.Windows;
-            InstallWindow(windows.CoreWindow);
-            //InstallWindow(windows.FailWindow);
-            //InstallWindow(windows.WinWindow);
+            InstallWindow(windows.Core);
+            InstallWindow(windows.Win, _signal);
+            InstallWindow(windows.Fail, _signal);
+            InstallWindow(windows.Settings, _signal);
         }
     }
 }

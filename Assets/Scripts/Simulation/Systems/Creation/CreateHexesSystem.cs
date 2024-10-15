@@ -8,19 +8,20 @@ namespace Scripts
 {
     public class CreateHexesSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         private readonly ColorSettings _colorSettings;
         private readonly HexFactory _factory;
 
         private EcsWorld _world;
-        private EcsFilter _slotsFilter;
+        private EcsFilter _emptySlotsFilter;
         private EcsPool<Hex> _hexesPool;
         private EcsPool<ModelCreated> _modelCreatedPool;
         private EcsPool<Unordered> _unorderedPool;
+        private EcsPool<Active> _activePool;
 
-        public CreateHexesSystem(GameFlowService gameFlowService, ColorSettings colorSettings, HexFactory factory)
+        public CreateHexesSystem(ProcessService processService, ColorSettings colorSettings, HexFactory factory)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
             _colorSettings = colorSettings;
             _factory = factory;
         }
@@ -28,17 +29,18 @@ namespace Scripts
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _slotsFilter = _world.Filter<Slot>().Inc<Empty>().End();
+            _emptySlotsFilter = _world.Filter<Slot>().Inc<Empty>().End();
             _hexesPool = _world.GetPool<Hex>();
+            _activePool = _world.GetPool<Active>();
             _modelCreatedPool = _world.GetPool<ModelCreated>();
             _unorderedPool = _world.GetPool<Unordered>();
         }
 
         public void Run(IEcsSystems systems)
         {
-            if ( !_gameFlowService.IsHexCreationNeeded ) return;
+            if ( _emptySlotsFilter.GetEntitiesCount() != 3 ) return;
             
-            foreach (var slot in _slotsFilter)
+            foreach (var slot in _emptySlotsFilter)
             {
                 SpawnHexes(slot);
             }
@@ -74,7 +76,7 @@ namespace Scripts
                     hex.Index = index;
                     
                     _modelCreatedPool.Add(e);
-                        
+                    _activePool.Add(e);    
                     _unorderedPool.Add(e);
                     
                     ref var targetChanged = ref _world.Send<TargetChanged>();

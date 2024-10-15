@@ -6,9 +6,7 @@ namespace Scripts
 {
     public class PickRandomCellSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly FieldService _fieldService;
-        private readonly HexService _hexService;
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         
         private EcsWorld _world;
         private EcsFilter _cellFilter;
@@ -16,18 +14,16 @@ namespace Scripts
         private EcsPool<Empty> _emptyPool;
         private EcsPool<ShiftRequest> _shiftRequestPool;
 
-        public PickRandomCellSystem(FieldService fieldService, HexService hexService, GameFlowService gameFlowService)
+        public PickRandomCellSystem(ProcessService processService)
         {
-            _fieldService = fieldService;
-            _hexService = hexService;
-            _gameFlowService = gameFlowService;
+            _processService = processService;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
 
-            _cellFilter = _world.Filter<Cell>().Inc<WorldPosition>().Exc<Empty>().End();
+            _cellFilter = _world.Filter<Cell>().Exc<Empty>().End();
             _cellPool = _world.GetPool<Cell>();
             _emptyPool = _world.GetPool<Empty>();
             _shiftRequestPool = _world.GetPool<ShiftRequest>();
@@ -35,28 +31,27 @@ namespace Scripts
 
         public void Run(IEcsSystems systems)
         {
-            if(_gameFlowService.IsAnyoneActing) return;
+            if(_processService.IsAnyProcess) return;
 
-            var e = _cellFilter.GetRawEntities().Take(_cellFilter.GetEntitiesCount()).ToArray();
-            if(e.Length == 0) return;
-            
-            var random = e[Random.Range(0, e.Length)];
-            
-            var pos = _cellPool.Get(random).FieldPosition;
-                
-            if (!_fieldService.TryGetNeighbors(pos, out var neighbors)) return;
-
-            var emptyNeighbors= neighbors
-                .Select(n => _fieldService.GetCellEntity(n))
-                .Where(c => _emptyPool.Has(c))
+            var cells= _cellFilter
+                .GetRawEntities()
+                .Take(_cellFilter.GetEntitiesCount())
                 .ToArray();
+            if (cells.Length == 0) return;
+            
+            var e = cells[Random.Range(0, cells.Length)];
+            
+            var cell = _cellPool.Get(e);
+
+            var emptyNeighbors = 
+                cell.Neighbors.Where(n => _emptyPool.Has(n.Id)).ToArray();
+            if(emptyNeighbors.Length == 0) return;
                 
-            var target = emptyNeighbors[Random.Range(0, emptyNeighbors.Length)];
-            
-            var count = _hexService.GetTopHexColorCount(random);
-            var from = _world.PackEntity(random);
-            var to = _world.PackEntity(target);
-            
+            var count = cell.Count;
+
+            var from = _world.PackEntity(e);
+            var to = emptyNeighbors[Random.Range(0, emptyNeighbors.Length)];
+                
             var r = _world.NewEntity();
             ref var request = ref _shiftRequestPool.Add(r);
             request.Count = count;

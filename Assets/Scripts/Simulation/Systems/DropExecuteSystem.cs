@@ -5,7 +5,7 @@ namespace Scripts
 {
     public class DropExecuteSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         private readonly CoreViewSettings _coreViewSettings;
 
         private EcsWorld _world;
@@ -15,9 +15,9 @@ namespace Scripts
         private EcsPool<HeightOffset> _offsetPool;
         private EcsPool<Hex> _hexPool;
 
-        public DropExecuteSystem(GameFlowService gameFlowService, CoreViewSettings coreViewSettings)
+        public DropExecuteSystem(ProcessService processService, CoreViewSettings coreViewSettings)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
             _coreViewSettings = coreViewSettings;
         }
 
@@ -45,7 +45,7 @@ namespace Scripts
                     offset = _offsetPool.Get(target).Value;
                 }
                 
-                ref var process = ref _gameFlowService.StartNewProcess(_movePool, e);
+                ref var process = ref _processService.StartNewProcess(_movePool, e);
                 process.Offset = Vector3.down * (_coreViewSettings.HexFlightHeight - offset);
                 process.Speed = _coreViewSettings.HexVerticalSpeed;
             }

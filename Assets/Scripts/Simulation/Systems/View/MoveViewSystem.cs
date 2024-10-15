@@ -6,7 +6,7 @@ namespace Scripts
 {
     public class MoveViewSystem : IEcsInitSystem, IEcsRunSystem 
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
 
         private EcsWorld _world;
         
@@ -17,9 +17,9 @@ namespace Scripts
         private EcsPool<Process> _processPool;
         private EcsPool<MonoLink<Transform>> _transformPool;
 
-        public MoveViewSystem(GameFlowService gameFlowService)
+        public MoveViewSystem(ProcessService processService)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
         }
 
         public void Init(IEcsSystems systems)
@@ -60,7 +60,7 @@ namespace Scripts
                     transform.DOMoveZ(targetPos.z, duration);
                 }
                 
-                _gameFlowService.SetDurationToProcess(e, duration);
+                _processService.SetDurationToProcess(e, duration);
             }
             
             _eventListener.OnAdd.Clear();

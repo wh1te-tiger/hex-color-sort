@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using Leopotam.EcsLite;
+using Zenject;
 
 namespace Scripts
 {
@@ -7,21 +8,20 @@ namespace Scripts
         private readonly AppSessionData _appData;
         private readonly CoreDataFactory _coreDataFactory;
         private readonly SceneService _sceneService;
-        private readonly UiService _uiService;
         private readonly Signal _startGameSignal;
+        private readonly EcsWorld _world;
 
-        public StartupHandler(AppSessionData appData, CoreDataFactory coreDataFactory, SceneService sceneService, UiService uiService, Signal signal)
+        public StartupHandler(AppSessionData appData, CoreDataFactory coreDataFactory, SceneService sceneService, Signal signal, EcsWorld world)
         {
             _appData = appData;
             _coreDataFactory = coreDataFactory;
             _sceneService = sceneService;
-            _uiService = uiService;
             _startGameSignal = signal;
+            _world = world;
         }
         
         public void Initialize()
         {
-            _uiService.Initialize<LobbyWindow>();
             if (_appData.HasSavedCoreSession)
             {
                 _startGameSignal.Subscribe(() => LoadCore(_appData.SavedCoreSession)) ;
@@ -34,7 +34,9 @@ namespace Scripts
 
         private void LoadCore(CoreSessionData coreData)
         {
-            _appData.SavedCoreSession = coreData;
+            _world.Destroy();
+            
+            _appData.OngoingCoreSession = coreData;
             _appData.HasFinishedCoreSession.Value = false;
             _sceneService.LoadScene(AppStates.Core);
         }

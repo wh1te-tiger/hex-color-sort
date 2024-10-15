@@ -5,7 +5,7 @@ namespace Scripts
 {
     public class ReturnExecuteSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         private readonly CoreViewSettings _coreViewSettings;
 
         private EcsWorld _world;
@@ -17,16 +17,16 @@ namespace Scripts
         private EcsPool<WorldPosition> _worldPosPool;
         private EcsPool<MonoLink<Transform>> _transformPool;
 
-        public ReturnExecuteSystem(GameFlowService gameFlowService, CoreViewSettings coreViewSettings)
+        public ReturnExecuteSystem(ProcessService processService, CoreViewSettings coreViewSettings)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
             _coreViewSettings = coreViewSettings;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _draggingFilter = _world.Filter<Dragging>().End();
+            _draggingFilter = _world.Filter<Dragging>().Inc<Hex>().End();
             _draggingFilter.AddEventListener(_eventListener);
 
             _hexPool = _world.GetPool<Hex>();
@@ -49,7 +49,7 @@ namespace Scripts
                     
                     var targetPos = _worldPosPool.Get(target).Value;
                     
-                    ref var process = ref _gameFlowService.StartNewProcess(_moveProcessPool, e);
+                    ref var process = ref _processService.StartNewProcess(_moveProcessPool, e);
                     process.Offset = new Vector3(targetPos.x - transform.position.x, 0, targetPos.z - transform.position.z);
                     process.Speed = _coreViewSettings.HexHorizontalSpeed;
                 }

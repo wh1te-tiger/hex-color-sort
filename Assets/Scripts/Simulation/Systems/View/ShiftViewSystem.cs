@@ -6,7 +6,7 @@ namespace Scripts
 {
     public class ShiftViewSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         private readonly ViewSettings _viewSettings;
 
         private EcsWorld _world;
@@ -18,9 +18,9 @@ namespace Scripts
         private EcsPool<MonoLink<Transform>> _transformPool;
         private EcsPool<WorldPosition> _worldPosPool;
 
-        public ShiftViewSystem(GameFlowService gameFlowService, ViewSettings viewSettings)
+        public ShiftViewSystem(ProcessService processService, ViewSettings viewSettings)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
             _viewSettings = viewSettings;
         }
         
@@ -63,7 +63,7 @@ namespace Scripts
                             transform.rotation = Quaternion.identity;
                         });
                 
-                    _gameFlowService.SetDurationToProcess(e, sequence.Duration());
+                    _processService.SetDurationToProcess(e, sequence.Duration());
                 }
             }
             _eventListener.OnAdd.Clear();

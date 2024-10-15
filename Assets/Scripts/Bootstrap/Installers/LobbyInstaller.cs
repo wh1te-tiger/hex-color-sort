@@ -51,7 +51,7 @@ namespace Scripts
             Container.BindInterfacesTo<StartupHandler>().AsSingle().WithArguments(_startSessionRequest);
             Container.Bind<FieldService>().AsSingle();
             Container.Bind<HexService>().AsSingle();
-            Container.Bind<GameFlowService>().AsSingle();
+            Container.Bind<ProcessService>().AsSingle();
         }
         
         private void InstallSystems()
@@ -64,6 +64,7 @@ namespace Scripts
             
             //Simulation
             Add<PickRandomCellSystem>();
+            Add<HandleTopHexSystem>();
             Add<TargetChangedEventSystem>();
             Add<DelaySystem>();
             Add<ShiftExecuteSystem>();
@@ -75,6 +76,11 @@ namespace Scripts
             
             //Process
             Add<ProcessSystem<ShiftProcess>>();
+            
+#if UNITY_EDITOR
+            Add<Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem>();
+            Add<Leopotam.EcsLite.UnityEditor.EcsSystemsDebugSystem>();
+#endif
         }
         
         private void InstallUi()

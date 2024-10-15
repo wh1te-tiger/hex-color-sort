@@ -8,7 +8,7 @@ namespace Scripts
 
         public Signal(Action action)
         {
-            this._action = action;
+            _action = action;
         }
 
         public Signal()

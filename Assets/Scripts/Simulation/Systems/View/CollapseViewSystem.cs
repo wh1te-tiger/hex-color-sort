@@ -9,7 +9,7 @@ namespace Scripts
 {
     public class CollapseViewSystem : IEcsInitSystem, IEcsRunSystem, IDisposable
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         private readonly CoreViewSettings _coreViewSettings;
         private readonly HexFactory _hexFactory;
         private readonly VfxFactory _vfxFactory;
@@ -25,10 +25,10 @@ namespace Scripts
 
         private readonly CompositeDisposable _disposables = new();
 
-        public CollapseViewSystem(GameFlowService gameFlowService, CoreViewSettings coreViewSettings,
+        public CollapseViewSystem(ProcessService processService, CoreViewSettings coreViewSettings,
             HexFactory hexFactory, VfxFactory vfxFactory)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
             _coreViewSettings = coreViewSettings;
             _hexFactory = hexFactory;
             _vfxFactory = vfxFactory;
@@ -67,7 +67,7 @@ namespace Scripts
                     _hexFactory.Release(transform.gameObject.GetComponent<EntityProvider>());
                 }; 
 
-                _gameFlowService.SetDurationToProcess(e, _coreViewSettings.CollapseDuration);
+                _processService.SetDurationToProcess(e, _coreViewSettings.CollapseDuration);
             }
             _eventListener.OnAdd.Clear();
         }

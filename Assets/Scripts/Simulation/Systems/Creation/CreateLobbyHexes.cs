@@ -22,6 +22,7 @@ namespace Scripts
             var hexPool = world.GetPool<Hex>();
             var unorderedPool = world.GetPool<Unordered>();
             var modelCreated = world.GetPool<ModelCreated>();
+            var activePool = world.GetPool<Active>();
             
             foreach (var cellData in _fieldSettings.cells)
             {
@@ -41,7 +42,7 @@ namespace Scripts
                         hex.Index = index;
                         
                         modelCreated.Add(e);
-                        
+                        activePool.Add(e);
                         unorderedPool.Add(e);
                         
                         ref var targetChanged = ref world.Send<TargetChanged>();

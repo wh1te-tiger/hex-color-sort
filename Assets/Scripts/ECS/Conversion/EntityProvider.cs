@@ -40,6 +40,7 @@ namespace Scripts
             _entity = world.PackEntity(e);
 
             ConvertComponents();
+            ID = _entity.Id;
             
             _isInitialized = true;
         }

@@ -572,7 +572,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WindowType: 0
   ParentWindow: {fileID: 0}
-  _progressBar: {fileID: 4060022624780386926}
+  progressBar: {fileID: 4060022624780386926}
+  settings: {fileID: 7551812566016069574}
 --- !u!225 &1967661925743778660
 CanvasGroup:
   m_ObjectHideFlags: 0

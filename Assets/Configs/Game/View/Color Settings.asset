@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Color Settings
   m_EditorClassIdentifier: 
   colors:
-  - id: 6
+  - id: 7
     color: {r: 0.9490196, g: 0.9490196, b: 0.9490196, a: 1}
-  - id: 5
+  - id: 6
     color: {r: 0.142, g: 0.142, b: 0.142, a: 1}
-  - id: 4
+  - id: 5
     color: {r: 0.4392157, g: 0.43529412, b: 0.827451, a: 1}
-  - id: 3
+  - id: 4
     color: {r: 1, g: 0.69411767, b: 0.25882354, a: 1}
-  - id: 2
+  - id: 3
     color: {r: 0.20392157, g: 0.6745098, b: 0.8784314, a: 1}
-  - id: 1
+  - id: 2
     color: {r: 0.2, g: 0.8509804, b: 0.69803923, a: 1}
-  - id: 0
+  - id: 1
     color: {r: 1, g: 0.32156864, b: 0.32156864, a: 1}
   countColorProbability:
     m_Mode: 2
@@ -34,7 +34,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
+        time: 1
         value: 1
         inSlope: 0
         outSlope: 0
@@ -43,13 +43,22 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1
-        value: 1
+        time: 6
+        value: 2
         inSlope: 0
         outSlope: 0
-        tangentMode: 0
+        tangentMode: 1
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.16158819
+      - serializedVersion: 3
+        time: 8
+        value: 3
+        inSlope: 0.90304565
+        outSlope: 0
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 0.1567123
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -58,22 +67,31 @@ MonoBehaviour:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
         time: 1
         value: 1
         inSlope: 0
         outSlope: 0
-        tangentMode: 0
+        tangentMode: 1
         weightedMode: 0
         inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 6
+        value: 1
+        inSlope: 0.33225268
+        outSlope: 0.33225268
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 8
+        value: 2
+        inSlope: 0.5
+        outSlope: 0.5
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

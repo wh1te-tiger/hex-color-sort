@@ -2,25 +2,19 @@
 
 namespace Scripts
 {
-    public class GameFlowService
+    public class ProcessService
     {
-        public bool IsAnyoneActing => _acting.GetEntitiesCount() > 0;
-        public bool IsHexCreationNeeded => _emptySlots.GetEntitiesCount() == 3;
-        public bool IsDragging => _dragging.GetEntitiesCount() == 1;
+        public bool IsAnyProcess => _acting.GetEntitiesCount() > 0;
         
         private readonly EcsPool<HasActiveProcess> _activeProcessPool;
         private readonly EcsPool<Process> _processPool;
         private readonly EcsPool<Delay> _delayPool;
         
         private readonly EcsFilter _acting;
-        private readonly EcsFilter _emptySlots;
-        private readonly EcsFilter _dragging;
         
-        public GameFlowService(EcsWorld w)
+        public ProcessService(EcsWorld w)
         {
             _acting = w.Filter<HasActiveProcess>().End();
-            _emptySlots = w.Filter<Slot>().Inc<Empty>().End();
-            _dragging = w.Filter<Slot>().Inc<Selected>().End();
             
             _processPool = w.GetPool<Process>();
             _activeProcessPool = w.GetPool<HasActiveProcess>();

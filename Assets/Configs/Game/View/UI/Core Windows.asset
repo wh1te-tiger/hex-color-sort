@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de2db89ca31432a9049ae3bdb779cb6, type: 3}
   m_Name: Core Windows
   m_EditorClassIdentifier: 
-  <CoreWindow>k__BackingField: {fileID: 4235100403719193302, guid: da514d712d570d54db918bedf8771395,
+  <Core>k__BackingField: {fileID: 4235100403719193302, guid: da514d712d570d54db918bedf8771395,
     type: 3}
-  <WinWindow>k__BackingField: {fileID: 0}
-  <FailWindow>k__BackingField: {fileID: 0}
+  <Win>k__BackingField: {fileID: 6299206797148618679, guid: 1f74b1ac5858e7c49aac7368bb0eec69,
+    type: 3}
+  <Fail>k__BackingField: {fileID: 3853950031428777341, guid: 6921f5ea867eb2840855af0f4c539268,
+    type: 3}
+  <Settings>k__BackingField: {fileID: 5739616299152897867, guid: 6a3fd797d2ace914fb535d4adce725e8,
+    type: 3}

@@ -35,10 +35,10 @@ namespace Scripts
             return q == other.q && r == other.r;
         }
 
-        public override string ToString()
+        /*public override string ToString()
         {
             return $"({q},{r},{s})";
-        }
+        }*/
 
         public override int GetHashCode()
         {

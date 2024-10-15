@@ -1,4 +1,6 @@
-﻿using Leopotam.EcsLite;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Leopotam.EcsLite;
 
 namespace Scripts
 {
@@ -18,15 +20,33 @@ namespace Scripts
 
         public void Create()
         {
+            var cellPool = _world.GetPool<Cell>();
+            var cellFilter = _world.Filter<Cell>().End();
+            var emptyPool = _world.GetPool<Empty>();
+            
             foreach (var cellData in _fieldSettings.cells)
             {
                 var coordinates = cellData.coordinates;
 
                 var e = _world.NewEntity();
-                ref var cell = ref _world.GetPool<Cell>().Add(e);
+                ref var cell = ref cellPool.Add(e);
                 cell.FieldPosition = coordinates;
-                _world.GetPool<Empty>().Add(e);
+                cell.TopHexColor = ColorId.None;
+                emptyPool.Add(e);
                 _fieldService.RegisterCell(e, coordinates);
+            }
+
+            
+            foreach (var e in cellFilter)
+            {
+                ref var cell = ref cellPool.Get(e);
+                List<EcsPackedEntity> n = new();
+                if (_fieldService.TryGetNeighbors(cell.FieldPosition, out var neighbors))
+                {
+                    n.AddRange(neighbors.Select(pos => _world.PackEntity(_fieldService.GetCellEntity(pos))));
+                }
+
+                cell.Neighbors = n.ToArray();
             }
         }
     }

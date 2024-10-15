@@ -59,13 +59,13 @@ namespace Scripts
 
     public enum ColorId
     {
+        None,
         Red,
         Green,
         Blue,
         Yellow,
         Purple,
         Black,
-        White,
-        None
+        White
     }
 }

@@ -14,7 +14,7 @@ namespace Scripts
             set
             {
                 if (_enabled == value) return;
-
+                
                 _enabled = value;
                 gameObject.SetActive(value);
                 if (value)
@@ -32,11 +32,10 @@ namespace Scripts
         }
         public WindowTypes WindowType;
         public WindowPresenter ParentWindow;
-        public bool IsRootWindow =>  ParentWindow == null;
         
         protected readonly PanelDisposables Disposables = new();
         private bool _isDisposed;
-        private bool _enabled;
+        private bool _enabled  = true;
         private Action<WindowPresenter> _onEnableInternal;
         private Action<WindowPresenter> _onDisableInternal;
         private CanvasGroup _canvasGroup;

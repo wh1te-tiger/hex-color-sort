@@ -4,7 +4,7 @@ namespace Scripts
 {
     public class CoreSessionData
     {
-        public CoreData CoreData { get; }
+        public CoreData CoreData { get; set; }
 
         public CoreSessionData(CoreData coreData)
         {
@@ -18,12 +18,14 @@ namespace Scripts
         public int fieldId;
         public int score;
         public HexData[] hexes;
+        public GameState state;
 
-        public CoreData(int fieldId, int score, HexData[] hexes)
+        public CoreData(int fieldId, int score, HexData[] hexes, GameState state)
         {
             this.fieldId = fieldId;
             this.score = score;
             this.hexes = hexes;
+            this.state = state;
         }
     }
 

@@ -23,7 +23,7 @@ namespace Scripts
                     .SelectMany(g => g.Select((h, i) => new HexData(h.Color, i, h.Pos))))
                 .ToArray();
 
-            return new CoreSessionData(new CoreData(level.Id, 0, hexes));
+            return new CoreSessionData(new CoreData(level.Id, 0, hexes, GameState.Playing));
         }
     }
 }

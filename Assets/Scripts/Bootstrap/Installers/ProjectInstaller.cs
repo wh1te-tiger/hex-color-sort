@@ -31,6 +31,11 @@ namespace Scripts
         {
             Container.Bind<CoreDataFactory>().AsSingle();
             Container.Bind<SceneService>().AsSingle();
+            Container.BindInterfacesTo<PlayerDataSaveLoadHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<CoreDataSaveLoadHandler>().AsSingle().NonLazy();
+            Container.Bind<SaveLoad>().AsSingle();
+            Container.Bind<UnityEventHandler>()
+                .FromNewComponentOnNewGameObject().AsSingle().NonLazy();
         }
     }
 }

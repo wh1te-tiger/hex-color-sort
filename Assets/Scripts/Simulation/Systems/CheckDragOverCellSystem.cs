@@ -6,26 +6,27 @@ namespace Scripts
     {
         private readonly DragService _dragService;
         private readonly FieldService _fieldService;
-        private readonly GameFlowService _gameFlowService;
         
         private EcsFilter _dragFilter;
+        private EcsFilter _dragging;
         private EcsFilter _selectedFilter;
         
         private EcsPool<Drag> _dragPool;
         private EcsPool<Selected> _selectedPool;
         private EcsPool<Empty> _emptyPool;
 
-        public CheckDragOverCellSystem(GameFlowService gameFlowService, DragService dragService, FieldService fieldService)
+        public CheckDragOverCellSystem(DragService dragService, FieldService fieldService)
         {
             _dragService = dragService;
             _fieldService = fieldService;
-            _gameFlowService = gameFlowService;
+            
         }
 
         public void Init(IEcsSystems systems)
         {
             var world = systems.GetWorld();
             _dragFilter = world.Filter<Drag>().End();
+            _dragging = world.Filter<Slot>().Inc<Selected>().End();
             _selectedFilter = world.Filter<Selected>().Inc<Cell>().End();
             _dragPool = world.GetPool<Drag>();
             _selectedPool = world.GetPool<Selected>();
@@ -34,7 +35,7 @@ namespace Scripts
 
         public void Run(IEcsSystems systems)
         {
-            if(!_gameFlowService.IsDragging) return;
+            if( _dragging.GetEntitiesCount() != 1) return;
             
             foreach (var e in _dragFilter)
             {

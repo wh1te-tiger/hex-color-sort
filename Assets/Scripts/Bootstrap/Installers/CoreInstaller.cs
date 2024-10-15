@@ -12,17 +12,19 @@ namespace Scripts
         [Inject] private AppSessionData _appData;
         
         private readonly InstallSettings _installInfo = new();
+        private readonly Signal _returnToLobbyRequest = new();
         private EcsWorld _world;
         
         public override void InstallBindings()
         {
             _installInfo.Container = () => Container;
-            
+
             InstallSettings();
             InstallWorld();
             InstallFactories();
             InstallSystems();
             InstallServices();
+            InstallSaveSystem();
             InstallUi();
             
             InstallMessagesTransporting();
@@ -56,8 +58,9 @@ namespace Scripts
             Container.Bind<FieldService>().AsSingle();
             Container.Bind<DragService>().AsSingle();
             Container.Bind<HexService>().AsSingle();
-            Container.Bind<GameFlowService>().AsSingle();
+            Container.Bind<ProcessService>().AsSingle();
             Container.Bind<LevelService>().AsSingle();
+            Container.BindInterfacesTo<FinalizeService>().AsSingle().WithArguments(_returnToLobbyRequest);
         }
         
         private void InstallSystems()
@@ -70,7 +73,7 @@ namespace Scripts
             
             //Creation
             Add<CreateFieldSystem>();
-            Add<CreateInitialHexesSystem>(_appData.SavedCoreSession);
+            Add<CreateInitialHexesSystem>(_appData.OngoingCoreSession);
             Add<CreateHexesSystem>();
             Add<CreateFieldViewSystem>(sceneData.FieldRoot);
             Add<CreateSlotsSystem>(sceneData.Slots);
@@ -87,8 +90,12 @@ namespace Scripts
             Add<DropExecuteSystem>();
             Add<PickCellSystem>();
             Add<ShiftExecuteSystem>();
+            Add<HandleTopHexSystem>();
             Add<CheckCollapseStateSystem>();
             Add<CollapseExecuteSystem>();
+            Add<ScoreSystem>();
+            Add<CheckEmptyCellsSystem>();
+            Add<DisplayEndGameWindow>();
             
             //View
             Add<HighlightSystem>();
@@ -109,8 +116,14 @@ namespace Scripts
 #endif
         }
         
+        void InstallSaveSystem()
+        {
+            Container.BindInterfacesTo<SaveSystem>().AsSingle().WithArguments(_returnToLobbyRequest).NonLazy();
+        }
+        
         private void InstallUi()
         {
+            Container.BindInstance(_returnToLobbyRequest).AsSingle().WhenInjectedInto<CoreUiInstaller>();
             Container.BindInstance(settings.CoreUiSettings).AsSingle();
             Container.Bind(typeof(Canvas), typeof(UiService))
                 .FromSubContainerResolve()

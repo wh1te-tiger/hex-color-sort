@@ -15,25 +15,12 @@ namespace Scripts
 
         public HexService(EcsWorld world)
         {
-            _filter = world.Filter<Hex>().End();
+            _filter = world.Filter<Hex>().Inc<Active>().End();
             _pool = world.GetPool<Hex>();
         }
         
-        //TODO: store top hex color data in cell component   
-        public ColorId GetTopHexColor(int cell)
-        {
-            var hexesOnCell = _filter
-                .GetRawEntities()
-                .Take(HexTotalCount)
-                .Select(e => _pool.Get(e))
-                .Where(hex => hex.Target.Id.Equals(cell))
-                .ToArray();
-            
-            return hexesOnCell.Length != 0 ? hexesOnCell.Single(h => h.Index == hexesOnCell.Length - 1).Color : ColorId.None;
-        }
-
         //TODO: nu hz
-        public int GetTopHexColorCount(int cell)
+        public int GetTopColorHexCount(int cell)
         {
             var hexesOnCell = _filter
                 .GetRawEntities()
@@ -42,6 +29,13 @@ namespace Scripts
                 .Where(hex => hex.Target.Id.Equals(cell))
                 .OrderByDescending(h=> h.Index)
                 .ToArray();
+
+            var allHexes = _filter
+                .GetRawEntities()
+                .Take(HexTotalCount)
+                .Select(e => _pool.Get(e))
+                .ToArray();
+            var onCell = allHexes.Where(hex => hex.Target.Id.Equals(cell)).ToArray();
             
             if (hexesOnCell.Length == 0) return 0;
             

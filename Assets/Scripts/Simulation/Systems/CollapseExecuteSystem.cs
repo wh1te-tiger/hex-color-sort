@@ -4,7 +4,7 @@ namespace Scripts
 {
     public class CollapseExecuteSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
 
         private EcsWorld _world;
         private EcsFilter _collapseFilter;
@@ -12,10 +12,11 @@ namespace Scripts
         private EcsPool<CollapseProcess> _processPool;
         private EcsPool<TargetChanged> _targetChangedPool;
         private EcsPool<Hex> _hexPool;
+        private EcsPool<Active> _activePool;
 
-        public CollapseExecuteSystem(GameFlowService gameFlowService)
+        public CollapseExecuteSystem(ProcessService processService)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
         }
 
         public void Init(IEcsSystems systems)
@@ -27,6 +28,7 @@ namespace Scripts
             _processPool = _world.GetPool<CollapseProcess>();
             _targetChangedPool = _world.GetPool<TargetChanged>();
             _hexPool = _world.GetPool<Hex>();
+            _activePool = _world.GetPool<Active>();
         }
 
         public void Run(IEcsSystems systems)
@@ -40,10 +42,11 @@ namespace Scripts
 
                 var collapse = _collapsePool.Get(e);
                 
-                ref var process = ref _gameFlowService.StartNewProcess(_processPool, e, collapse.Delay * 0.05f);
+                ref var process = ref _processService.StartNewProcess(_processPool, e, collapse.Delay * 0.05f);
                 process.PlayVfx = hex.Index == 0;
                 
                 _collapsePool.Del(e);
+                _activePool.Del(e);
             }
         }
     }

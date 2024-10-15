@@ -9,6 +9,7 @@ namespace Scripts
     {
         [SerializeField] private Button playButton;
         [SerializeField] private TMP_Text levelText;
+        [SerializeField] private LayoutGroup textGroup;
         
         [Inject] private AppSessionData _appData;
         [Inject] private Signal _startSessionRequest;
@@ -17,7 +18,8 @@ namespace Scripts
         public void Initialize()
         {
             playButton.onClick.AddListener(OnPlayButtonClicked);
-            levelText.text = _appData.NextLevelID.ToString();
+            levelText.text = (_appData.NextLevelID + 1).ToString();
+            textGroup.CalculateLayoutInputHorizontal();
         }
 
         private void OnPlayButtonClicked()

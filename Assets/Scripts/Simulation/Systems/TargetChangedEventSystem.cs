@@ -34,10 +34,12 @@ namespace Scripts
                     {
                         ref var oldCell = ref _cellsPool.Get(target);
                         oldCell.Count--;
+                        if(oldCell.Count < 0) Debug.LogError("COUNT");
                         
                         if (oldCell.Count == 0)
                         {
                             _emptyPool.Add(target);
+                            oldCell.TopHexColor = ColorId.None;
                         }
                     }
                     

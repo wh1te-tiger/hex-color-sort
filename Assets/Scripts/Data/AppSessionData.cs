@@ -5,11 +5,13 @@ namespace Scripts
 {
     public class AppSessionData
     {
-        public int NextLevelID { get; private set; }
+        public int NextLevelID { get; set; }
         public CoreSessionData SavedCoreSession;
         public bool HasSavedCoreSession => SavedCoreSession != null;
         public readonly BoolReactiveProperty IsLastCoreSessionWon = new();
         public readonly BoolReactiveProperty HasFinishedCoreSession = new();
+        public CoreSessionData OngoingCoreSession;
+        public AppStates State;
         
         public readonly LevelSettings[] Levels;
         

@@ -5,7 +5,7 @@ namespace Scripts
 {
     public class RiseExecuteSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private readonly GameFlowService _gameFlowService;
+        private readonly ProcessService _processService;
         private readonly CoreViewSettings _coreViewSettings;
 
         private EcsWorld _world;
@@ -13,9 +13,9 @@ namespace Scripts
         private readonly EventListener _eventListener = new();
         private EcsPool<MoveProcess> _movePool;
 
-        public RiseExecuteSystem(GameFlowService gameFlowService, CoreViewSettings coreViewSettings)
+        public RiseExecuteSystem(ProcessService processService, CoreViewSettings coreViewSettings)
         {
-            _gameFlowService = gameFlowService;
+            _processService = processService;
             _coreViewSettings = coreViewSettings;
         }
 
@@ -32,7 +32,7 @@ namespace Scripts
         {
             foreach (var e in _eventListener.OnAdd)
             {
-                ref var process = ref _gameFlowService.StartNewProcess(_movePool, e);
+                ref var process = ref _processService.StartNewProcess(_movePool, e);
                 process.Offset = Vector3.up * _coreViewSettings.HexFlightHeight;
                 process.Speed = _coreViewSettings.HexVerticalSpeed;
             }
