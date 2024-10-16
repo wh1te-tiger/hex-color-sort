@@ -7,5 +7,6 @@ namespace Scripts
     {
         [field: SerializeField] public CoreViewSettings CoreViewSettings { get; private set; }
         [field: SerializeField] public CoreUiSettings CoreUiSettings { get; private set; }
+        [field: SerializeField] public SoundSettings CoreSoundSettings { get; private set; }
     }
 }

@@ -11,9 +11,11 @@ namespace Scripts
         private Action _onFinished;
         private IDisposable _disposable;
         private VisualEffect _vfx;
+        private AudioSource _audioSource;
         private void Awake()
         {
             _vfx = GetComponent<VisualEffect>();
+            _audioSource = GetComponent<AudioSource>();
 
             _disposable = _vfx
                 .ObserveEveryValueChanged(v => v.HasAnySystemAwake())
@@ -25,6 +27,7 @@ namespace Scripts
         public void Play()
         {
             _vfx.Play();
+            _audioSource?.PlayDelayed(.1f);
         }
         
         public void Stop()

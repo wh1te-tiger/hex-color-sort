@@ -3,7 +3,6 @@ using DG.Tweening;
 using Leopotam.EcsLite;
 using UniRx;
 using UnityEngine;
-using UnityEngine.VFX;
 
 namespace Scripts
 {
@@ -13,6 +12,7 @@ namespace Scripts
         private readonly CoreViewSettings _coreViewSettings;
         private readonly HexFactory _hexFactory;
         private readonly VfxFactory _vfxFactory;
+        private readonly SoundService _soundService;
 
         private EcsWorld _world;
         
@@ -26,12 +26,13 @@ namespace Scripts
         private readonly CompositeDisposable _disposables = new();
 
         public CollapseViewSystem(ProcessService processService, CoreViewSettings coreViewSettings,
-            HexFactory hexFactory, VfxFactory vfxFactory)
+            HexFactory hexFactory, VfxFactory vfxFactory, SoundService soundService)
         {
             _processService = processService;
             _coreViewSettings = coreViewSettings;
             _hexFactory = hexFactory;
             _vfxFactory = vfxFactory;
+            _soundService = soundService;
         }
 
         public void Init(IEcsSystems systems)
@@ -65,7 +66,8 @@ namespace Scripts
                     .onComplete += () =>
                 {
                     _hexFactory.Release(transform.gameObject.GetComponent<EntityProvider>());
-                }; 
+                };
+                _soundService.PlaySound(SoundType.Collapse);
 
                 _processService.SetDurationToProcess(e, _coreViewSettings.CollapseDuration);
             }

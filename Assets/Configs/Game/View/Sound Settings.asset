@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45b063e37694450996d3cd267e76270, type: 3}
+  m_Name: Sound Settings
+  m_EditorClassIdentifier: 
+  sounds:
+  - SoundType: 0
+    Clip: {fileID: 8300000, guid: 808f19e01044c7440b0cd4d48600ede9, type: 3}
+    Volume: 0.3
+  - SoundType: 1
+    Clip: {fileID: 8300000, guid: a3c2124a0a477174599ec8181ef48672, type: 3}
+    Volume: 0.3
+  - SoundType: 1
+    Clip: {fileID: 8300000, guid: fdc72f176c04eea48859d9dd6523f56a, type: 3}
+    Volume: 0.3
+  - SoundType: 1
+    Clip: {fileID: 8300000, guid: 0348965fc0d93c24ba2352c7f32dca5b, type: 3}
+    Volume: 0.3
+  - SoundType: 2
+    Clip: {fileID: 8300000, guid: dc09f5ef2832d544b994b0e1f12dd570, type: 3}
+    Volume: 1
+  - SoundType: 3
+    Clip: {fileID: 8300000, guid: 76f7e1ee50624734aa34a199b82bd4df, type: 3}
+    Volume: 0.7
+  - SoundType: 4
+    Clip: {fileID: 8300000, guid: 94f6fb5078e18244ab43b961015097d7, type: 3}
+    Volume: 0.7

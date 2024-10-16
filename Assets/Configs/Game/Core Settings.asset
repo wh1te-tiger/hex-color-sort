@@ -16,3 +16,5 @@ MonoBehaviour:
     type: 2}
   <CoreUiSettings>k__BackingField: {fileID: 11400000, guid: c2e41210d73fad04db6173a438e8420a,
     type: 2}
+  <CoreSoundSettings>k__BackingField: {fileID: 11400000, guid: 34bdb2ac53da8df46a9e1821d2b951f8,
+    type: 2}

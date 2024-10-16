@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using Leopotam.EcsLite;
 using UnityEngine;
+using Zenject;
 
 namespace Scripts
 {
@@ -8,6 +9,7 @@ namespace Scripts
     {
         private readonly ProcessService _processService;
         private readonly ViewSettings _viewSettings;
+        private readonly SoundService _soundService;
 
         private EcsWorld _world;
         
@@ -18,10 +20,11 @@ namespace Scripts
         private EcsPool<MonoLink<Transform>> _transformPool;
         private EcsPool<WorldPosition> _worldPosPool;
 
-        public ShiftViewSystem(ProcessService processService, ViewSettings viewSettings)
+        public ShiftViewSystem(ProcessService processService, ViewSettings viewSettings, [InjectOptional] SoundService soundService)
         {
             _processService = processService;
             _viewSettings = viewSettings;
+            _soundService = soundService;
         }
         
         public void Init(IEcsSystems systems)
@@ -62,6 +65,7 @@ namespace Scripts
                         {
                             transform.rotation = Quaternion.identity;
                         });
+                    _soundService?.PlaySound(SoundType.Shift);
                 
                     _processService.SetDurationToProcess(e, sequence.Duration());
                 }

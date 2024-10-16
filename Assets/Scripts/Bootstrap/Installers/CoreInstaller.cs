@@ -26,6 +26,7 @@ namespace Scripts
             InstallServices();
             InstallSaveSystem();
             InstallUi();
+            InstallSound();
             
             InstallMessagesTransporting();
         }
@@ -60,6 +61,7 @@ namespace Scripts
             Container.Bind<HexService>().AsSingle();
             Container.Bind<ProcessService>().AsSingle();
             Container.Bind<LevelService>().AsSingle();
+            Container.Bind<SoundService>().AsSingle().WithArguments(settings.CoreSoundSettings);
             Container.BindInterfacesTo<FinalizeService>().AsSingle().WithArguments(_returnToLobbyRequest);
         }
         
@@ -104,6 +106,7 @@ namespace Scripts
             Add<MoveViewSystem>();
             Add<CollapseViewSystem>();
             Add<HexOrderViewSystem>();
+            Add<PlayLandedSoundSystem>();
             Add<AlignCameraViewToFieldSystem>();
             
             //Process
@@ -131,6 +134,24 @@ namespace Scripts
                 .ByInstaller<CoreUiInstaller>()
                 .WithKernel()
                 .AsSingle();
+        }
+
+        private void InstallSound()
+        {
+            InstallAudioSource<UiAudioSource>();
+            InstallAudioSource<WorldAudioSource>();
+            return;
+
+            void InstallAudioSource<TAudioSource>()
+            {
+                var audioSource = new GameObject($"[{typeof(TAudioSource).Name}]").AddComponent<AudioSource>();
+
+                Container.BindInstance(audioSource).AsCached();
+
+                Container
+                    .Bind<TAudioSource>().AsSingle()
+                    .WithArguments(audioSource);
+            }
         }
         
         private void InstallMessagesTransporting()
