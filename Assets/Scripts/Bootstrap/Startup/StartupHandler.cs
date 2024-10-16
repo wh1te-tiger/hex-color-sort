@@ -34,8 +34,6 @@ namespace Scripts
 
         private void LoadCore(CoreSessionData coreData)
         {
-            _world.Destroy();
-            
             _appData.OngoingCoreSession = coreData;
             _appData.HasFinishedCoreSession.Value = false;
             _sceneService.LoadScene(AppStates.Core);

@@ -16,7 +16,7 @@ namespace Scripts
         public override void InstallBindings()
         {
             Container.Bind<Canvas>().FromComponentInNewPrefab(_settings.Canvas).AsSingle();
-            Container.BindFactory<GameObject, object[], WindowPresenter, UiFactory>().FromFactory<UiFactory>();
+            Container.BindFactory<GameObject, object[], Transform, WindowPresenter, UiFactory>().FromFactory<UiFactory>();
             Container.Bind<UiService>().AsSingle();
             
             InstallWindows();

@@ -5,10 +5,17 @@ namespace Scripts
 {
     public class InputSystem : IEcsInitSystem, IEcsRunSystem
     {
+        private LevelService _levelService;
+        
         private EcsWorld _world;
         private EcsPool<DragStarted> _dragStartedPool;
         private EcsPool<Drag> _dragPool;
         private EcsPool<DragEnded> _dragEndedPool;
+
+        public InputSystem(LevelService levelService)
+        {
+            _levelService = levelService;
+        }
 
         public void Init(IEcsSystems systems)
         {
@@ -20,6 +27,8 @@ namespace Scripts
 
         public void Run(IEcsSystems systems)
         {
+            if(_levelService.LevelState.Value != GameState.Playing) return;
+            
             if (Input.GetMouseButtonDown(0))
             {
                 ref DragStarted started = ref _dragStartedPool.Send();

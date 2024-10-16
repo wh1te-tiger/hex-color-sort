@@ -88,9 +88,9 @@ namespace Scripts
             Add<ReturnExecuteSystem>();
             Add<RiseExecuteSystem>();
             Add<DropExecuteSystem>();
+            Add<HandleTopHexSystem>();
             Add<PickCellSystem>();
             Add<ShiftExecuteSystem>();
-            Add<HandleTopHexSystem>();
             Add<CheckCollapseStateSystem>();
             Add<CollapseExecuteSystem>();
             Add<ScoreSystem>();
@@ -104,6 +104,7 @@ namespace Scripts
             Add<MoveViewSystem>();
             Add<CollapseViewSystem>();
             Add<HexOrderViewSystem>();
+            Add<AlignCameraViewToFieldSystem>();
             
             //Process
             Add<ProcessSystem<ShiftProcess>>();

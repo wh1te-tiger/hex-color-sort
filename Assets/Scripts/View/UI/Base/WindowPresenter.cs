@@ -73,6 +73,12 @@ namespace Scripts
         {
             TryDispose();
         }
+
+        public void SetSafeArea(SafeAreaOffset safeAreaOffset)
+        {
+            var rect = GetComponent<RectTransform>();
+            
+        }
     }
     
     public class PanelDisposables
