@@ -7,7 +7,6 @@ namespace Scripts
     public class CoreInstaller : MonoInstaller
     {
         [SerializeField] private CoreSettings settings;
-        [SerializeField] private LevelSettings levelSettings;
         [SerializeField] private LevelSceneData sceneData;
         [Inject] private AppSessionData _appData;
         
@@ -36,9 +35,9 @@ namespace Scripts
             Container.Bind<ViewSettings>().FromInstance(settings.CoreViewSettings).AsSingle();
             Container.BindInstance(settings.CoreViewSettings).AsSingle();
             Container.BindInstance(settings.CoreViewSettings.ColorSettings).AsSingle();
-
-            Container.BindInstance(levelSettings).AsSingle();
-            Container.BindInstance(levelSettings.Field).AsSingle();
+            
+            Container.BindInstance(_appData.GetLevel()).AsSingle();
+            Container.BindInstance(_appData.GetLevel().Field).AsSingle();
         }
         
         private void InstallWorld()

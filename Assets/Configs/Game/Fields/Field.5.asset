@@ -10,96 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbb404acae774bd487a248384498e415, type: 3}
-  m_Name: Field.0
+  m_Name: Field.5
   m_EditorClassIdentifier: 
   <cells>k__BackingField:
   - coordinates:
-      q: 0
-      r: 0
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 1
-      r: 0
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: -1
-      r: 0
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 0
-      r: 1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 0
-      r: -1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 1
-      r: -1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: -1
-      r: 1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 2
-      r: 0
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 1
-      r: 1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 2
-      r: -1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: -2
-      r: 0
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
       q: -1
       r: -1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: -2
-      r: 1
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: 0
-      r: 2
-    isLocked: 0
-    hexes: []
-    lockCondition: 0
-  - coordinates:
-      q: -1
-      r: 2
     isLocked: 0
     hexes: []
     lockCondition: 0
@@ -116,6 +32,30 @@ MonoBehaviour:
     hexes: []
     lockCondition: 0
   - coordinates:
+      q: -2
+      r: 0
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: -1
+      r: 0
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: 0
+      r: -1
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: 1
+      r: -1
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
       q: 2
       r: -2
     isLocked: 0
@@ -123,7 +63,67 @@ MonoBehaviour:
     lockCondition: 0
   - coordinates:
       q: -2
-      r: 2
+      r: 1
     isLocked: 0
     hexes: []
     lockCondition: 0
+  - coordinates:
+      q: -1
+      r: 1
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: 0
+      r: 0
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: 1
+      r: 0
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: 2
+      r: -1
+    isLocked: 0
+    hexes: []
+    lockCondition: 0
+  - coordinates:
+      q: -2
+      r: 2
+    isLocked: 1
+    hexes: []
+    lockCondition: 100
+  - coordinates:
+      q: -1
+      r: 2
+    isLocked: 1
+    hexes: []
+    lockCondition: 200
+  - coordinates:
+      q: 0
+      r: 1
+    isLocked: 1
+    hexes: []
+    lockCondition: 150
+  - coordinates:
+      q: 1
+      r: 1
+    isLocked: 1
+    hexes: []
+    lockCondition: 200
+  - coordinates:
+      q: 2
+      r: 0
+    isLocked: 1
+    hexes: []
+    lockCondition: 100
+  - coordinates:
+      q: 0
+      r: 2
+    isLocked: 1
+    hexes: []
+    lockCondition: 250

@@ -1,32 +1,50 @@
-﻿using System;
-using Scripts;
+﻿using Scripts;
 using UnityEditor;
 using UnityEngine;
 
 namespace Editor
 {
-    [CustomEditor(typeof(FieldSettings))]
+    [CustomEditor(typeof(Field))]
     public class FieldEditor : UnityEditor.Editor
     {
-        private FieldSettings _settings;
+        private Field _field;
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (GUILayout.Button("Fill"))
+            _field = (Field)target;
+            
+            if (GUILayout.Button("Create Field"))
             {
-                _settings = (FieldSettings)target;
-                _settings.cells = new CellData[_settings.coordinates.Length];
-                for (var i = 0; i < _settings.coordinates.Length; i++)
-                {
-                    var cor = _settings.coordinates[i];
-                    var cellData = new CellData
-                    {
-                        coordinates = new Coordinates(cor.x, cor.y),
-                        hexes = Array.Empty<Hexes>()
-                    };
-                    _settings.cells[i] = cellData;
-                }
+                _field.CreateField();
             }
+            
+            if (GUILayout.Button("Save Field"))
+            {
+                if (!_field.HasSettings)
+                {
+                    var settings = CreateInstance<FieldSettings>();
+                    AssetDatabase.CreateAsset(settings, "Assets/Configs/Game/Fields/Field..asset");
+                    AssetDatabase.SaveAssets();
+                    _field.FieldSettings = settings;
+                }
+                
+                var serializedObject = new SerializedObject(_field.FieldSettings);
+                EditorGUI.BeginChangeCheck();
+                serializedObject.Update();
+                
+                _field.SaveField();
+                
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(_field.FieldSettings);
+            }
+
+            GUI.enabled = _field.HasSettings;
+            if (GUILayout.Button("Load Field"))
+            {
+                _field.LoadField();
+            }
+
+            GUI.enabled = true;
         }
     }
 }

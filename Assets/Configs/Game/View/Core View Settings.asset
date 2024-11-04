@@ -26,5 +26,5 @@ MonoBehaviour:
     type: 3}
   <HexHorizontalSpeed>k__BackingField: 30
   <HexVerticalSpeed>k__BackingField: 15
-  <HexFlightHeight>k__BackingField: 1.5
+  <HexFlightHeight>k__BackingField: 1
   <CollapseDuration>k__BackingField: 0.3

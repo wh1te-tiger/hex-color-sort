@@ -6,6 +6,5 @@ namespace Scripts
     public class FieldSettings : ScriptableObject
     {
         [field: SerializeField] public CellData[] cells { get;  set; }
-        [SerializeField] public Vector2Int[] coordinates;
     }
 }

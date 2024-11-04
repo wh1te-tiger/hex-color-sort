@@ -8,7 +8,6 @@ namespace Scripts
         public Coordinates coordinates;
         public bool isLocked;
         public Hexes[] hexes;
+        public int lockCondition;
     }
-    
-    
 }
