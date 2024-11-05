@@ -134,9 +134,9 @@ Material:
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.4140789, g: 0.33333334, b: 0.6117647, a: 1}
+    - _BaseColor: {r: 0.518, g: 0.49114075, b: 0.4259111, a: 1}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _Color: {r: 0.41407886, g: 0.3333333, b: 0.6117647, a: 1}
+    - _Color: {r: 0.518, g: 0.49114066, b: 0.42591107, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

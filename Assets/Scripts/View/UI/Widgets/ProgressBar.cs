@@ -28,29 +28,24 @@ namespace Scripts
         public void SetFillAmountUnclamped(int value)
         {
             if (!_hasMaxValue) throw new Exception("Max value is not set");
-
-            var clampedValue = value / (float) _maxValue;
-            UpdateValues(clampedValue);
-        }
-
-        public void SetFillAmount(float value)
-        {
+            
             UpdateValues(value);
         }
-
-        private void UpdateValues(float value, bool forced = false)
+        
+        private void UpdateValues(int value, bool forced = false)
         {
-            fill.DOFillAmount(value, forced? 0f : fillDuration);
+            var clampedValue = value / (float) _maxValue;
+            fill.DOFillAmount(clampedValue, forced? 0f : fillDuration);
 
             _stringBuilder.Clear();
             switch (displayType)
             {
                 case ProgressDisplayType.Percentage:
-                    _stringBuilder.AppendFormat("{0:P}", value);
+                    _stringBuilder.AppendFormat("{0:P}", clampedValue);
                     break;
                 case ProgressDisplayType.Bounds:
                     if(!_hasMaxValue) throw new Exception("Max value is not set");
-                    _stringBuilder.Append($"{Mathf.CeilToInt(value * 100)} / {_maxValue}");
+                    _stringBuilder.Append($"{Mathf.CeilToInt(value)} / {_maxValue}");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -97,6 +97,7 @@ namespace Scripts
             Add<ScoreSystem>();
             Add<CheckEmptyCellsSystem>();
             Add<DisplayEndGameWindow>();
+            Add<CheckScoreLockConditionSystem>();
             
             //View
             Add<HighlightSystem>();
@@ -107,6 +108,7 @@ namespace Scripts
             Add<HexOrderViewSystem>();
             Add<PlayLandedSoundSystem>();
             Add<AlignCameraViewToFieldSystem>();
+            Add<HandleLockViewSystem>();
             
             //Process
             Add<ProcessSystem<ShiftProcess>>();

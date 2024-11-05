@@ -23,6 +23,8 @@ namespace Scripts
             var cellPool = _world.GetPool<Cell>();
             var cellFilter = _world.Filter<Cell>().End();
             var emptyPool = _world.GetPool<Empty>();
+            var lockedPool = _world.GetPool<Locked>();
+            var scoreLockedConditionPool = _world.GetPool<ScoreLockCondition>();
             
             foreach (var cellData in _fieldSettings.cells)
             {
@@ -33,6 +35,14 @@ namespace Scripts
                 cell.FieldPosition = coordinates;
                 cell.TopHexColor = ColorId.None;
                 emptyPool.Add(e);
+                
+                if (cellData.isLocked)
+                {
+                    lockedPool.Add(e);
+                    ref var condition = ref scoreLockedConditionPool.Add(e);
+                    condition.TargetScore = cellData.lockCondition;
+                }
+                
                 _fieldService.RegisterCell(e, coordinates);
             }
 

@@ -14,6 +14,7 @@ namespace Scripts
         private EcsPool<Drag> _dragPool;
         private EcsPool<Selected> _selectedPool;
         private EcsPool<Empty> _emptyPool;
+        private EcsPool<Locked> _lockedPool;
 
         public CheckDragOverCellSystem(DragService dragService, FieldService fieldService)
         {
@@ -31,6 +32,7 @@ namespace Scripts
             _dragPool = world.GetPool<Drag>();
             _selectedPool = world.GetPool<Selected>();
             _emptyPool = world.GetPool<Empty>();
+            _lockedPool = world.GetPool<Locked>();
         }
 
         public void Run(IEcsSystems systems)
@@ -42,7 +44,7 @@ namespace Scripts
                 var drag = _dragPool.Get(e);
                 var coordinates = _dragService.ScreenPosToFieldCoordinates(drag.MousePosition);
                 var cellEntity = _fieldService.GetCellEntity(coordinates);
-                if (cellEntity != -1 && _emptyPool.Has(cellEntity))
+                if (cellEntity != -1 && _emptyPool.Has(cellEntity) && !_lockedPool.Has(cellEntity))
                 {
                     if (_selectedPool.Has(cellEntity))
                     {
