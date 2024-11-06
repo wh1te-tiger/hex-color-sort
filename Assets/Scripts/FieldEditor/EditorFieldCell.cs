@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Scripts
 {
@@ -45,7 +44,7 @@ namespace Scripts
         private void OnDrawGizmos()
         {
             if(!isLocked) return;
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(transform.position, .25f);
         }
     }

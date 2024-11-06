@@ -60,6 +60,7 @@ namespace Scripts
             Container.Bind<HexService>().AsSingle();
             Container.Bind<ProcessService>().AsSingle();
             Container.Bind<LevelService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LockedOverlayService>().AsSingle().WithArguments(sceneData.OverlayCanvas);
             Container.Bind<SoundService>().AsSingle().WithArguments(settings.CoreSoundSettings);
             Container.BindInterfacesTo<FinalizeService>().AsSingle().WithArguments(_returnToLobbyRequest);
         }
@@ -108,7 +109,8 @@ namespace Scripts
             Add<HexOrderViewSystem>();
             Add<PlayLandedSoundSystem>();
             Add<AlignCameraViewToFieldSystem>();
-            Add<HandleLockViewSystem>();
+            Add<HandleCellLockColorSystem>();
+            Add<HandleCellLockIconSystem>();
             
             //Process
             Add<ProcessSystem<ShiftProcess>>();

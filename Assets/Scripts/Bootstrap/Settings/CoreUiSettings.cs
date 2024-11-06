@@ -6,6 +6,7 @@ namespace Scripts
     public class CoreUiSettings : ScriptableObject
     {
         [field: SerializeField] public GameObject Canvas { get; private set; }
+        [field: SerializeField] public GameObject LockedOverlay { get; private set; }
         [field: SerializeField] public CoreWindows Windows { get; private set; }
     }
 }

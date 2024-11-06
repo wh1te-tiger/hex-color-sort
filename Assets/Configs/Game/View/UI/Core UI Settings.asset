@@ -14,5 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Canvas>k__BackingField: {fileID: 4554186815662352657, guid: aaa1551617975b444b4bcd7f664df188,
     type: 3}
+  <LockedOverlayCanvas>k__BackingField: {fileID: 5609663621713322011, guid: f0a51f216e3573e4d963f76039fb2de8,
+    type: 3}
+  <LockedOverlay>k__BackingField: {fileID: 6404508255027487104, guid: 82e3a9f41ef22da4aabf844519dd3433,
+    type: 3}
   <Windows>k__BackingField: {fileID: 11400000, guid: c2652ce9dca6dcc4493be0aa159517a3,
     type: 2}

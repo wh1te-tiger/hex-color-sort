@@ -8,5 +8,6 @@ namespace Scripts
         [field: SerializeField] public Transform HexRoot {get; private set; }
         [field: SerializeField] public Transform VFXRoot {get; private set; }
         [field: SerializeField] public Transform Slots {get; private set; }
+        [field: SerializeField] public Canvas OverlayCanvas {get; private set; }
     }
 }
