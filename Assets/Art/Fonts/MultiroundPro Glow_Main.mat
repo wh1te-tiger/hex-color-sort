@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MultiroundPro Glow_Main
+  m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
+  m_Parent: {fileID: -3630990724849998151, guid: a61ffab6c62f9164c9d6e3459daa5ee6,
+    type: 2}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - GLOW_ON
+  - UNDERLAY_ON
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _GlowOuter: 0.75
+    - _GlowPower: 0.363
+    - _OutlineSoftness: 0
+    - _ScaleRatioC: 0.8467742
+    - _UnderlayOffsetX: 0.77
+    m_Colors:
+    - _GlowColor: {r: 0.1728044, g: 0.04443538, b: 0.6912172, a: 1}
+  m_BuildTextureStacks: []

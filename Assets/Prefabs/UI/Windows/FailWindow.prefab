@@ -205,8 +205,7 @@ MonoBehaviour:
   m_text: failed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a61ffab6c62f9164c9d6e3459daa5ee6, type: 2}
-  m_sharedMaterial: {fileID: -3630990724849998151, guid: a61ffab6c62f9164c9d6e3459daa5ee6,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: a44b076a8fdff20458b62132c614ae8b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

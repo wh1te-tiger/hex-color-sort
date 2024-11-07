@@ -18,13 +18,13 @@ namespace Scripts
         [Inject] protected SoundService SoundService;
         [Inject] protected UiAudioSource UiAudioSource;
         [Inject] private Signal _returnToLobbyRequest;
-        [Inject] private AppSessionData _data;
+        [Inject] private LevelService _levelService;
 
         #endregion
         
         public void Initialize()
         {
-            levelText.text = (_data.NextLevelID + 1).ToString();
+            levelText.text = _levelService.LevelId.ToString();
             button.onClick.AddListener(OnButtonClicked);
         }
 

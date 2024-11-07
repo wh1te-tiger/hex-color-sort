@@ -18,8 +18,9 @@ namespace Scripts
         public void Initialize()
         {
             playButton.onClick.AddListener(OnPlayButtonClicked);
-            levelText.text = (_appData.NextLevelID + 1).ToString();
+            levelText.text = _appData.NextLevelID.ToString();
             textGroup.CalculateLayoutInputHorizontal();
+            Debug.Log("hellow");
         }
 
         private void OnPlayButtonClicked()

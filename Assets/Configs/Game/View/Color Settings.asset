@@ -13,20 +13,22 @@ MonoBehaviour:
   m_Name: Color Settings
   m_EditorClassIdentifier: 
   colors:
-  - id: 7
+  - id: 8
     color: {r: 0.9490196, g: 0.9490196, b: 0.9490196, a: 1}
-  - id: 6
+  - id: 7
     color: {r: 0.142, g: 0.142, b: 0.142, a: 1}
   - id: 5
     color: {r: 0.4392157, g: 0.43529412, b: 0.827451, a: 1}
   - id: 4
     color: {r: 1, g: 0.69411767, b: 0.25882354, a: 1}
   - id: 3
-    color: {r: 0.20392157, g: 0.6745098, b: 0.8784314, a: 1}
+    color: {r: 0.20392157, g: 0.59399754, b: 0.8784314, a: 1}
   - id: 2
-    color: {r: 0.2, g: 0.8509804, b: 0.69803923, a: 1}
+    color: {r: 0.019607844, g: 0.76862746, b: 0.41960785, a: 1}
   - id: 1
     color: {r: 1, g: 0.32156864, b: 0.32156864, a: 1}
+  - id: 6
+    color: {r: 0.19999999, g: 0.8509804, b: 0.75703615, a: 1}
   countColorProbability:
     m_Mode: 2
     m_CurveMultiplier: 1
