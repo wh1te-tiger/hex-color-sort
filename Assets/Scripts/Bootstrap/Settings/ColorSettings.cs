@@ -30,7 +30,7 @@ namespace Scripts
                 return color;
             }
 
-            throw new ArgumentOutOfRangeException($"Color with ID:{color.ToString()} not found");
+            throw new ArgumentOutOfRangeException($"Color with ID:{colorId.ToString()} not found");
 
         }
 
@@ -65,6 +65,7 @@ namespace Scripts
         Blue,
         Yellow,
         Purple,
+        Cian,
         Black,
         White
     }

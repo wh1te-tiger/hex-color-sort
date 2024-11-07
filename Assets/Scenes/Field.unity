@@ -421,10 +421,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f99d8a9af9c94038bc9335c046aba849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <FieldSettings>k__BackingField: {fileID: 11400000, guid: e1e00c76aa95f0d48ac5fc1bbc16d30f,
+  <FieldSettings>k__BackingField: {fileID: 11400000, guid: 457fab98057cb0449a82a6ef3fbb0d11,
     type: 2}
   dimension: 2
-  type: 1
+  type: 0
   cellPrefab: {fileID: -5765664815764270160, guid: db95329e56c6c7c4cb07d734f7337f2e,
     type: 3}
   root: {fileID: 2050744605}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 020e3d55a0f24c31a53511b958421f19, type: 3}
-  m_Name: Level.1
+  m_Name: Level.19
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 1
-  <Field>k__BackingField: {fileID: 11400000, guid: a4a43478ff07b1f47b0ee5c9f565d2a9,
+  <Id>k__BackingField: 19
+  <Field>k__BackingField: {fileID: 11400000, guid: 5f95c274e4adac149bee0b0dd5b72b67,
     type: 2}
   <WinCondition>k__BackingField:
-    Score: 100
+    Score: 350

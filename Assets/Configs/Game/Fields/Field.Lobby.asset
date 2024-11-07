@@ -18,8 +18,9 @@ MonoBehaviour:
       r: 0
     isLocked: 0
     hexes:
-    - colorId: 6
+    - colorId: 8
       count: 3
+    lockCondition: 0
   - coordinates:
       q: 1
       r: 0
@@ -27,29 +28,34 @@ MonoBehaviour:
     hexes:
     - colorId: 7
       count: 3
+    lockCondition: 0
   - coordinates:
       q: -1
       r: 0
     isLocked: 0
     hexes: []
+    lockCondition: 0
   - coordinates:
       q: 0
       r: 1
     isLocked: 0
     hexes: []
+    lockCondition: 0
   - coordinates:
       q: 0
       r: -1
     isLocked: 0
     hexes: []
+    lockCondition: 0
   - coordinates:
       q: 1
       r: -1
     isLocked: 0
     hexes: []
+    lockCondition: 0
   - coordinates:
       q: -1
       r: 1
     isLocked: 0
     hexes: []
-  coordinates: []
+    lockCondition: 0
