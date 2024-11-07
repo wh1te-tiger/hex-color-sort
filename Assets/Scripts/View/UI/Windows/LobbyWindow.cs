@@ -20,7 +20,6 @@ namespace Scripts
             playButton.onClick.AddListener(OnPlayButtonClicked);
             levelText.text = _appData.NextLevelID.ToString();
             textGroup.CalculateLayoutInputHorizontal();
-            Debug.Log("hellow");
         }
 
         private void OnPlayButtonClicked()

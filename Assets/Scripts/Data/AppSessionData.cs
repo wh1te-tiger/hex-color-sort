@@ -18,6 +18,7 @@ namespace Scripts
         public AppSessionData(LevelSettings[] levels)
         {
             Levels = levels;
+            NextLevelID = 1;
             HasFinishedCoreSession
                 .Where(v => v)
                 .Subscribe(_ =>
@@ -41,7 +42,7 @@ namespace Scripts
 #if UNITY_EDITOR
             throw new Exception($"No level with the id: {NextLevelID} is found");
 #else
-        return Levels[0];
+        return Levels[(NextLevelID + 1) % Levels.Length];
 #endif
         }
     }
