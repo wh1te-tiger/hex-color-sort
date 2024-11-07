@@ -18,7 +18,7 @@ namespace Scripts
         public void Init(IEcsSystems systems)
         {
             var world = systems.GetWorld();
-            _emptyCellsFilter = world.Filter<Cell>().Inc<Empty>().End();
+            _emptyCellsFilter = world.Filter<Cell>().Inc<Empty>().Exc<Locked>().End();
         }
 
         public void Run(IEcsSystems systems)
