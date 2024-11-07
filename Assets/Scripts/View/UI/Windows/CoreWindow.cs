@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -11,6 +12,7 @@ namespace Scripts
 
         [SerializeField] private ProgressBar progressBar;
         [SerializeField] private Button settings;
+        [SerializeField] private TMP_Text label;
 
         #endregion
         #region Dependencies
@@ -29,6 +31,7 @@ namespace Scripts
                 .AddTo(Disposables.Lifecycle);
             _uiService.WindowChanged.Subscribe(WindowChanged).AddTo(Disposables.Lifecycle);
             settings.onClick.AddListener(()=>_uiService.DisplayWindow<SettingsWindow>());
+            label.text = $"level {_levelService.LevelId}";
         }
 
         private void WindowChanged(WindowPresenter window)

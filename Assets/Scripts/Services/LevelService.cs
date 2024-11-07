@@ -6,6 +6,7 @@ namespace Scripts
     {
         public int Score { get; private set; }
         public int WinScore { get; }
+        public int LevelId { get; }
         public readonly ReadOnlyReactiveProperty<GameState> LevelState;
 
         private readonly AppSessionData _appSessionData;
@@ -18,6 +19,7 @@ namespace Scripts
             var stateStream = this.ObserveEveryValueChanged(_ => _state);
             LevelState = new ReadOnlyReactiveProperty<GameState>(stateStream);
             Score = _appSessionData.OngoingCoreSession.CoreData.score;
+            LevelId = _appSessionData.NextLevelID + 1;
         }
         
         public void IncreaseScore()

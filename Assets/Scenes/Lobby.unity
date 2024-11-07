@@ -274,6 +274,7 @@ MonoBehaviour:
   <HexRoot>k__BackingField: {fileID: 1714955784}
   <VFXRoot>k__BackingField: {fileID: 0}
   <Slots>k__BackingField: {fileID: 0}
+  <OverlayCanvas>k__BackingField: {fileID: 0}
 --- !u!1 &1204587742
 GameObject:
   m_ObjectHideFlags: 0
